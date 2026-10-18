@@ -350,6 +350,33 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
   .hole-detail .chart-card { max-width: 340px; justify-self: center; width: 100%; }
 }
 
+/* Where am I: a side rail on wide screens (a ball rolling from tee to flag), and an active chip plus progress line in the top menu */
+.toc { background: linear-gradient(90deg, var(--accent), var(--p6)) 0 100% / var(--prog, 0%) 3px no-repeat, var(--bg); }
+.toc a { transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
+.toc a[aria-current="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.rail { position: fixed; right: max(18px, calc((100vw - 1040px) / 2 - 92px)); top: 50%; transform: translateY(-50%); height: min(66vh, 600px); width: 30px; z-index: 6; display: none; }
+@media (min-width: 1240px) { .rail { display: block; } }
+.rail-track { position: absolute; left: 13px; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--rule); }
+.rail-fill { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--p, 0) * 100%); border-radius: 2px; background: linear-gradient(180deg, var(--accent), var(--p6)); box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent); }
+.rail-tee { position: absolute; left: 7px; top: -18px; width: 16px; height: 7px; border-radius: 2px; background: var(--c-tee); }
+.rail-flag { position: absolute; left: 11px; bottom: -14px; width: 26px; height: 42px; overflow: visible; }
+.rail-dot { position: absolute; left: 9px; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: var(--bg); border: 2px solid var(--muted); transition: transform 0.3s cubic-bezier(.3,1.6,.5,1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+.rail-dot.done { background: var(--accent); border-color: var(--accent); }
+.rail-dot.active { transform: scale(1.45); border-color: var(--ink); background: var(--paper); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); }
+.rail-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.rail-label { position: absolute; right: 22px; top: 50%; transform: translate(8px, -50%); white-space: nowrap; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 4px 14px rgba(0,0,0,0.12); opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; }
+.rail-dot.active .rail-label { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.rail:hover .rail-label, .rail-dot:focus-visible .rail-label { opacity: 1; transform: translate(0, -50%); }
+.rail.moving .rail-dot.active .rail-label { opacity: 1; transform: translate(0, -50%); }
+.rail-ball { position: absolute; left: 5px; top: calc(var(--p, 0) * 100%); width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; z-index: 2; pointer-events: none;
+  background: radial-gradient(circle at 34% 30%, #fff 0 22%, #ececec 50%, #bcbcbc 100%); box-shadow: 0 3px 8px rgba(0,0,0,0.35); transition: transform 0.4s ease, opacity 0.4s ease; }
+.rail-ball::after { content: ""; position: absolute; inset: 0; border-radius: 50%; transform: rotate(var(--rot, 0deg));
+  background: radial-gradient(circle, rgba(0,0,0,0.18) 0 1px, transparent 1.6px) 0 0 / 5px 5px; mask: radial-gradient(circle, #000 60%, transparent 72%); -webkit-mask: radial-gradient(circle, #000 60%, transparent 72%); }
+.rail-ball.holed { transform: translateY(8px) scale(0.55); opacity: 0.75; }
+.rail-count { position: absolute; left: 50%; top: calc(100% + 34px); transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+.rail-count b { color: var(--ink); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .rail-dot, .rail-ball, .rail-label, .toc a { transition: none; } }
+
 /* Scroll-in reveals; only applied when motion is allowed */
 .pre { opacity: 0; transform: translateY(24px); }
 .revealed { opacity: 1; transform: none; transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.3,.7,.2,1); }
@@ -379,6 +406,8 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
   </header>
 
   <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#course">Course</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
+
+  <nav class="rail" id="rail" aria-label="Page progress"></nav>
 
   <section>
     <div class="stats" id="stats"></div>
@@ -1717,6 +1746,57 @@ function paintMap() {
   });
 }
 paintMap();
+
+// Section indicator: dots for each section on a side rail, a ball that rolls from tee to flag as you scroll,
+// and the matching chip highlighted in the top menu
+(function railSpy() {
+  const links = [...document.querySelectorAll(".toc a")].map(a => ({ a, id: a.getAttribute("href").slice(1), label: a.textContent }))
+    .filter(l => document.getElementById(l.id));
+  const n = links.length, rail = el("rail"), toc = document.querySelector(".toc");
+  rail.innerHTML = `<div class="rail-track"><div class="rail-fill"></div></div><span class="rail-tee"></span>
+    ${links.map((l, i) => `<a class="rail-dot" href="#${l.id}" style="top:${i / (n - 1) * 100}%" aria-label="${l.label}"><span class="rail-label">${l.label}</span></a>`).join("")}
+    <span class="rail-ball"></span>
+    <svg class="rail-flag" viewBox="0 0 26 42" aria-hidden="true"><ellipse cx="4" cy="38" rx="7" ry="3" fill="var(--ink)" opacity="0.6"/><line x1="4" y1="38" x2="4" y2="6" stroke="var(--ink)" stroke-width="2"/><path d="M4 6 l18 6 l-18 6z" fill="var(--flag)"/></svg>
+    <span class="rail-count"><b>01</b> / ${String(n).padStart(2, "0")}</span>`;
+  const dots = [...rail.querySelectorAll(".rail-dot")], ball = rail.querySelector(".rail-ball"), count = rail.querySelector(".rail-count b");
+  let current = -2, idle;
+  function update() {
+    const tops = links.map(l => el(l.id).getBoundingClientRect().top + scrollY);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const y = scrollY + innerHeight * 0.35;
+    let k = -1;
+    tops.forEach((t, i) => { if (t <= y) k = i; });
+    let p = 0;
+    if (k >= 0) {
+      const end = k < n - 1 ? tops[k + 1] : max + innerHeight * 0.35;
+      p = Math.min(1, (k + Math.max(0, Math.min(1, (y - tops[k]) / Math.max(1, end - tops[k])))) / (n - 1));
+    }
+    if (scrollY >= max - 2) { p = 1; k = n - 1; }
+    rail.style.setProperty("--p", p);
+    ball.style.setProperty("--rot", (scrollY * 0.6) + "deg");
+    ball.classList.toggle("holed", p >= 0.999);
+    toc.style.setProperty("--prog", (max > 0 ? scrollY / max * 100 : 0) + "%");
+    if (k !== current) {
+      current = k;
+      dots.forEach((d, i) => { d.classList.toggle("active", i === k); d.classList.toggle("done", i < k); });
+      links.forEach((l, i) => l.a.setAttribute("aria-current", String(i === k)));
+      count.textContent = String(Math.max(1, k + 1)).padStart(2, "0");
+      // Keep the active chip in view in the sideways-scrolling menu
+      if (k >= 0) {
+        const a = links[k].a;
+        toc.scrollTo({ left: a.offsetLeft - toc.clientWidth / 2 + a.offsetWidth / 2, behavior: reduceMotion ? "auto" : "smooth" });
+      }
+    }
+    // Show the active label while scrolling, then let it fade
+    rail.classList.add("moving");
+    clearTimeout(idle);
+    idle = setTimeout(() => rail.classList.remove("moving"), 1400);
+  }
+  let queued = false;
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; update(); }); } }, { passive: true });
+  addEventListener("resize", update);
+  update();
+})();
 
 // Follow-a-player chips, summary and the shareable ?player= link
 el("chips").innerHTML = players.map(x => `<button type="button" class="chip" aria-pressed="false" data-chip="${x.p}" style="--ring:${colorOf(x.p)}">${avatarHTML(x.p)}${x.p}</button>`).join("");
