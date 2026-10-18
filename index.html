@@ -24,7 +24,7 @@
   --flag: #b8432f;         /* pin flag */
   --heat-0: #e8f1ea; --heat-1: #f3ecd2; --heat-2: #f2d8b8; --heat-3: #eab9a3; --heat-4: #d98e7d;
   --heat-ink: #1d2620;
-  --p1: #2f6b4a; --p2: #3b6fb6; --p3: #c27a12; --p4: #9b4aa8; --p5: #b8432f; --p6: #4f8f9b;
+  --p1: #1d7a48; --p2: #3b6fb6; --p3: #c27a12; --p4: #9b4aa8; --p5: #b8432f; --p6: #00899f;
   --d3: #2f6b4a; --d4: #6f9e6a; --d5: #a9c07d; --d6: #e0cf86; --d7: #e9ab6c; --d8: #d9805e; --d9: #b8432f;
   --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --body: "Source Serif 4", Georgia, serif;
@@ -35,7 +35,7 @@
   --accent: #6fbf8e; --flag: #e57a63;
   --heat-0: #1f3a2a; --heat-1: #3a3820; --heat-2: #4a3622; --heat-3: #5a2f26; --heat-4: #74302a;
   --heat-ink: #e5ebe6;
-  --p1: #6fbf8e; --p2: #7aa7e8; --p3: #e0a347; --p4: #c78bd3; --p5: #e57a63; --p6: #7cc3cf;
+  --p1: #3f9c68; --p2: #5a87cc; --p3: #bd7f22; --p4: #a96ab7; --p5: #cc5a43; --p6: #13979f;
   --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
   color-scheme: dark;
 } }
@@ -44,7 +44,7 @@
   --accent: #6fbf8e; --flag: #e57a63;
   --heat-0: #1f3a2a; --heat-1: #3a3820; --heat-2: #4a3622; --heat-3: #5a2f26; --heat-4: #74302a;
   --heat-ink: #e5ebe6;
-  --p1: #6fbf8e; --p2: #7aa7e8; --p3: #e0a347; --p4: #c78bd3; --p5: #e57a63; --p6: #7cc3cf;
+  --p1: #3f9c68; --p2: #5a87cc; --p3: #bd7f22; --p4: #a96ab7; --p5: #cc5a43; --p6: #13979f;
   --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
   color-scheme: dark;
 }
@@ -219,16 +219,111 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
   .lb-row, .lb-bar, .lb-av, .lb-num, .par-line, [data-player] { transition: none; }
   .lb-num .shot.pop { animation: none; }
 }
+
+/* Hero: title on the left, season leader spotlight on the right */
+.hero { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+.hero-text { display: grid; gap: 14px; min-width: 0; }
+.spotlight { position: relative; overflow: hidden; border-radius: 10px; padding: 22px; color: #fff; display: grid; gap: 10px; justify-items: start;
+  background: radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--ring) 55%, #fff) 0%, var(--ring) 45%, color-mix(in srgb, var(--ring) 55%, #000) 100%); }
+.spotlight::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 14px); }
+.spotlight .avatar { width: 84px; height: 84px; box-shadow: 0 0 0 3px rgba(255,255,255,0.9); }
+.spotlight .lbl { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+.spotlight .nm { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 2.4rem; line-height: 1; }
+.spotlight .ln { font-family: var(--mono); font-size: 0.85rem; opacity: 0.95; }
+.spotlight svg { width: 100%; max-width: 320px; height: auto; overflow: visible; }
+.spotlight svg text { fill: rgba(255,255,255,0.85); font-size: 11px; }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } }
+
+/* Story: a sticky chart that changes as the steps scroll past */
+.story-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 32px; }
+.story-graphic { position: sticky; top: 72px; align-self: start; }
+.story-graphic .chart-card svg { min-width: 0; width: 100%; height: auto; display: block; }
+.story-steps { display: grid; }
+.step { min-height: 72vh; display: flex; align-items: center; }
+.step:last-child { min-height: 50vh; }
+.step > div { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px; display: grid; gap: 8px; opacity: 0.35; transition: opacity 0.4s ease, border-color 0.4s ease; }
+.step.on > div { opacity: 1; border-color: var(--ink); }
+.step .n { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.sdot { transition: transform 0.9s cubic-bezier(.3,.7,.2,1), opacity 0.5s ease; }
+.sdot circle { transition: stroke 0.4s ease, opacity 0.5s ease; }
+.ax { opacity: 0; transition: opacity 0.5s ease; }
+.ax.on { opacity: 1; }
+.story-graphic svg text.sname { fill: var(--ink); font-family: var(--body); font-size: 13px; }
+@media (max-width: 760px) {
+  .story-grid { grid-template-columns: 1fr; gap: 0; }
+  .story-graphic { top: 50px; z-index: 3; background: var(--bg); padding-bottom: 8px; }
+  .step { min-height: 70vh; align-items: flex-end; padding-bottom: 12vh; }
+  .step > div { opacity: 1; }
+  /* The story chart shrinks to about half size on a phone, so its labels scale up to stay readable */
+  .story-graphic svg text, .story-graphic svg text.sname { font-size: 19px; }
+}
+
+/* Every hole dot plot and the shared tooltip */
+.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); font-family: var(--mono); font-size: 0.78rem; padding: 6px 9px; border-radius: 4px; max-width: 240px; line-height: 1.35; }
+.tip[hidden] { display: none; }
+.hdot { cursor: default; }
+.hdot circle.hit { fill: transparent; }
+.hdot:hover circle.mark { stroke: var(--ink); stroke-width: 2; }
+
+/* Trading cards: front is the card, back is the stat sheet; they flip in 3D */
+.tcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 28px 20px; justify-items: center; }
+.twrap { width: 100%; max-width: 290px; display: grid; gap: 10px; perspective: 1000px; }
+.tcard { position: relative; aspect-ratio: 5 / 7; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(.3,.7,.2,1);
+  transform: rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--flip, 0deg))); }
+.twrap.tilting .tcard { transition: transform 0.08s linear; }
+.twrap.flipped .tcard { --flip: 180deg; }
+.tface { position: absolute; inset: 0; border-radius: 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.tfront { color: #fff; display: grid; grid-template-rows: auto auto auto 1fr auto; justify-items: center; padding: 16px 16px 12px; box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 45%, #fff) 0%, var(--c) 38%, color-mix(in srgb, var(--c) 50%, #000) 100%); }
+.tfront::before { content: ""; position: absolute; inset: 7px; border: 1.5px solid rgba(255,255,255,0.55); border-radius: 10px; pointer-events: none; }
+.tfront::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light;
+  background: radial-gradient(circle at var(--gx, 30%) var(--gy, 20%), rgba(255,255,255,0.75), transparent 45%), repeating-linear-gradient(135deg, rgba(255,255,255,0.07) 0 2px, transparent 2px 12px); }
+.ttop { width: 100%; display: flex; justify-content: space-between; align-items: flex-start; }
+.tovr { display: grid; justify-items: center; line-height: 1; }
+.tovr b { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 3rem; }
+.tovr span, .tarch { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.tarch { text-align: right; max-width: 9em; opacity: 0.95; padding-top: 6px; }
+.tfront .avatar { width: 40%; height: auto; aspect-ratio: 1; margin-top: -6px; box-shadow: 0 0 0 3px rgba(255,255,255,0.85), 0 8px 18px rgba(0,0,0,0.3); }
+.tname { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 1.9rem; text-transform: uppercase; letter-spacing: 0.02em; margin-top: 8px; border-bottom: 1.5px solid rgba(255,255,255,0.55); padding: 0 10px 4px; }
+.tattrs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; align-content: center; font-family: var(--mono); font-size: 0.92rem; }
+.tattrs div { display: flex; gap: 8px; align-items: baseline; }
+.tattrs b { font-family: var(--display); font-stretch: 80%; font-size: 1.35rem; font-weight: 800; min-width: 1.6em; text-align: right; }
+.tfoot { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; }
+.tback { transform: rotateY(180deg); background: var(--paper); border: 1px solid var(--rule); padding: 16px 18px; display: grid; gap: 10px; align-content: start; font-size: 0.86rem; }
+.tback dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin: 0; }
+.tback dt { color: var(--muted); }
+.tback dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+.tback h3 { display: flex; justify-content: space-between; align-items: baseline; }
+.tactions { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.tactions button { font-family: var(--mono); font-size: 0.8rem; padding: 5px 11px; border-radius: 4px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+.tactions button:hover { border-color: var(--ink); }
+.tactions button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tactions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.twrap.dim { opacity: 0.38; }
+.twrap.hl .tfront { box-shadow: 0 0 0 3px var(--ink), 0 10px 28px rgba(0,0,0,0.25); }
+.rating-note { font-size: 0.9rem; }
+
+/* Scroll-in reveals; only applied when motion is allowed */
+.pre { opacity: 0; transform: translateY(24px); }
+.revealed { opacity: 1; transform: none; transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.3,.7,.2,1); }
+@media (prefers-reduced-motion: reduce) {
+  .sdot, .sdot circle, .ax, .tcard, .step > div { transition: none; }
+}
 </style>
 </head>
 <body>
 
 <div class="wrap">
   <header>
+    <div class="hero">
+    <div class="hero-text">
     <span class="eyebrow">Session report</span>
     <h1>Golfparken Aalborg Sessions</h1>
     <p>Six sessions on a six-hole loop, played by a rotating group of six. Lower is better throughout. Par is 3 per hole, 18 for the loop, and every hole is capped at 9 (triple par). Session 1 was played before the cap, so its scores are capped here to match. The latest session was played on 18 October 2026.</p>
     <div class="meta" id="meta"></div>
+    </div>
+    <aside class="spotlight" id="spotlight" aria-label="Season leader"></aside>
+    </div>
     <div class="focus">
       <span class="focus-label" id="focuslabel">Follow a player</span>
       <div class="chips" id="chips" role="group" aria-labelledby="focuslabel"></div>
@@ -236,10 +331,19 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
     </div>
   </header>
 
-  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#holes">Holes</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Profiles</a><a href="#observations">Observations</a></nav>
+  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
 
   <section>
     <div class="stats" id="stats"></div>
+  </section>
+
+  <section id="story">
+    <span class="eyebrow">The season</span>
+    <h2>Six sessions in five moments</h2>
+    <div class="story-grid">
+      <div class="story-graphic"><div class="chart-card"><svg id="storysvg" viewBox="0 0 640 420" role="img" aria-label="Every round of the season as a dot, rearranged for each step of the story"></svg></div></div>
+      <div class="story-steps" id="steps"></div>
+    </div>
   </section>
 
   <section id="leaderboard">
@@ -307,6 +411,16 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
     <div class="chart-card"><div id="holechart"></div></div>
   </section>
 
+  <section id="every-hole">
+    <span class="eyebrow">Every hole</span>
+    <h2>Every hole ever played</h2>
+    <p>One dot for each hole score, stacked by hole and by how many strokes it took. Colors show who played it. Hover a dot for the details.</p>
+    <div class="chart-card">
+      <div class="legend-static" id="dotlegend"></div>
+      <div id="dotchart"></div>
+    </div>
+  </section>
+
   <section id="player-by-hole">
     <span class="eyebrow">Player by hole</span>
     <h2>Each player's average on each hole</h2>
@@ -352,8 +466,9 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 
   <section id="profiles">
     <span class="eyebrow">Players</span>
-    <h2>Player profiles</h2>
-    <div class="cards" id="profilecards"></div>
+    <h2>Player cards</h2>
+    <p class="rating-note muted" id="ratingnote"></p>
+    <div class="tcards" id="profilecards"></div>
   </section>
 
   <section id="observations">
@@ -399,6 +514,7 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
     <p>Source: golf_sessions_data.csv for sessions 1 to 5, and the app scorecards for session 6; 25 rounds in total. Putts were counted in sessions 2, 3 and 6. The file has putt rows for session 1, but they are not real counts and are left out. Six session 1 hole scores above 9 (10 to 15) are capped at 9, which lowers that session's totals: Lukas 49 to 44, Daniel 47 to 41, Laurits 51 to 44 and Mikkel 46 to 44. Only session 6 has a date, so sessions are shown in numeric order. <span id="check"></span> Tobias played once, so their single round is shown but not ranked with the regulars.</p>
   </footer>
 </div>
+<div class="tip" id="tip" role="tooltip" hidden></div>
 
 <script>
 const CSV = `Session,Course,Player,Metric,Hole_1,Hole_2,Hole_3,Hole_4,Hole_5,Hole_6,Total,To_Par
@@ -904,36 +1020,167 @@ el("rtabs").addEventListener("click", e => {
   playRace();
 });
 
-// Player profile cards
-(function drawProfiles() {
-  el("profilecards").innerHTML = players.map(x => {
-    const ha = playerHoleAvg(x.p);
-    const bestH = ha.indexOf(Math.min(...ha)), worstH = ha.indexOf(Math.max(...ha));
-    const bestRound = x.list.reduce((a, r) => (r.total < a.total ? r : a));
-    let w = 0, l = 0, t = 0;
-    x.list.forEach(r => rows.filter(o => o.s === r.s && o.p !== x.p).forEach(o => (r.total < o.total ? w++ : r.total > o.total ? l++ : t++)));
-    const putts = puttRows.filter(r => r.p === x.p);
-    const holes = x.list.flatMap(r => r.h);
-    const gained = x.list.reduce((a, r) => a + sessionAvg[r.s] - r.total, 0) / x.rounds;
-    const items = [
-      ["Rounds", `${x.rounds}${x.wins ? `, ${x.wins} won` : ""}`],
-      ["Best round", `${bestRound.total} (session ${bestRound.s})`],
-      ["Vs the field", `${signed(gained)} per round`],
-      ["Record vs others", `${w}-${l}${t ? "-" + t : ""}`],
-      ["Best hole", `Hole ${bestH + 1} (${fmt(ha[bestH])})`],
-      ["Worst hole", `Hole ${worstH + 1} (${fmt(ha[worstH])})`],
-      ["Holes at 9", `${holes.filter(h => h === MAX_SCORE).length} of ${holes.length}`],
-      ["Avg putts", putts.length ? `${fmt(putts.reduce((a, r) => a + r.total, 0) / putts.length)} over ${putts.length} round${putts.length === 1 ? "" : "s"}` : "not counted"],
-    ];
-    return `<article class="pcard" data-player="${x.p}" data-toggle tabindex="0" aria-label="Follow ${x.p}">
-      <div class="phead">
-        <div class="pid">${AVATARS[x.p] ? `<span class="avatar" role="img" aria-label="${x.p}" style="background-image:url(${AVATARS[x.p]});--ring:${colorOf(x.p)}"></span>` : ""}<h3>${x.p}</h3></div>
-        <span class="big num">${fmt(x.avg)}</span></div>
-      ${spark(x.list)}
-      <dl>${items.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
-    </article>`;
-  }).join("");
-})();
+// Player cards: a trading card on the front, the stat sheet on the back
+// Card colors are fixed (the light-mode player hues) so the cards and the saved PNGs look the same in either theme
+const CARD_HEX = { Lukas: "#1d7a48", Laurits: "#3b6fb6", Mikkel: "#c27a12", Daniel: "#9b4aa8", Oskar: "#b8432f", Tobias: "#00899f" };
+// Each rating maps a real stat onto 40-99, linearly between a "great" and a "poor" value for this group
+const MIN_ROUNDS = 3;
+const rate = (v, great, poor) => Math.round(Math.max(40, Math.min(99, 99 - (v - great) / (poor - great) * 59)));
+const ATTRS = [
+  { k: "SCO", name: "Scoring", arch: "Shot-maker", how: "average total (30 rates 99, 52 rates 40)" },
+  { k: "CON", name: "Consistency", arch: "Steady hand", how: "spread of round totals (needs three rounds)" },
+  { k: "PUT", name: "Putting", arch: "Putter", how: "putts per hole in counted rounds (1.8 to 2.8)" },
+  { k: "FIN", name: "Finishing", arch: "Closer", how: "strokes on holes 4 to 6 per round (12 to 27)" },
+  { k: "SAF", name: "Safety", arch: "Damage control", how: "share of holes that end on the maximum 9 (0% to 60%)" },
+  { k: "H2H", name: "Head to head", arch: "The one to beat", how: "share of opponents beaten in the same session (100% to 0%)" },
+];
+const cardData = players.map(x => {
+  const totals = x.list.map(r => r.total);
+  const sd = Math.sqrt(totals.reduce((a, t) => a + (t - x.avg) ** 2, 0) / totals.length);
+  const putts = puttRows.filter(r => r.p === x.p);
+  const holes = x.list.flatMap(r => r.h);
+  let w = 0, l = 0, t = 0;
+  x.list.forEach(r => rows.filter(o => o.s === r.s && o.p !== x.p).forEach(o => (r.total < o.total ? w++ : r.total > o.total ? l++ : t++)));
+  const v = {
+    SCO: rate(x.avg, 30, 52),
+    CON: x.rounds >= MIN_ROUNDS ? rate(sd, 0, 7) : null,
+    PUT: putts.length ? rate(putts.reduce((a, r) => a + r.total, 0) / (putts.length * HOLES), 1.8, 2.8) : null,
+    FIN: rate(x.list.reduce((a, r) => a + r.h[3] + r.h[4] + r.h[5], 0) / x.rounds, 12, 27),
+    SAF: rate(holes.filter(h => h === MAX_SCORE).length / holes.length, 0, 0.6),
+    H2H: rate((w + t / 2) / (w + l + t), 1, 0),
+  };
+  // Overall weights scoring double, then averages whatever could be rated
+  const have = ATTRS.filter(a => v[a.k] !== null);
+  // Fewer than three rounds is too little to rank, so those cards are marked provisional with no overall
+  const ovr = x.rounds >= MIN_ROUNDS ? Math.round((v.SCO * 2 + have.reduce((a, b) => a + v[b.k], 0)) / (have.length + 2)) : null;
+  const best = have.filter(a => a.k !== "SCO").sort((a, b) => v[b.k] - v[a.k])[0];
+  return { x, v, ovr, arch: best && v[best.k] > v.SCO ? best.arch : "Shot-maker", rec: `${w}-${l}${t ? "-" + t : ""}` };
+});
+el("ratingnote").textContent = `Ratings run from 40 to 99 and come straight from the scores: ${ATTRS.map(a => `${a.k} is ${a.how}`).join("; ")}. Overall counts scoring twice and needs at least ${MIN_ROUNDS} rounds; with fewer the card is provisional. A dash means there is not enough data yet. Hover to tilt, flip for the full stat sheet, or save a card as an image.`;
+
+el("profilecards").innerHTML = cardData.map(({ x, v, ovr, arch, rec }) => {
+  const ha = playerHoleAvg(x.p);
+  const bestH = ha.indexOf(Math.min(...ha)), worstH = ha.indexOf(Math.max(...ha));
+  const bestRound = x.list.reduce((a, r) => (r.total < a.total ? r : a));
+  const putts = puttRows.filter(r => r.p === x.p);
+  const holes = x.list.flatMap(r => r.h);
+  const gained = x.list.reduce((a, r) => a + sessionAvg[r.s] - r.total, 0) / x.rounds;
+  const items = [
+    ["Rounds", `${x.rounds}${x.wins ? `, ${x.wins} won` : ""}`],
+    ["Best round", `${bestRound.total} (session ${bestRound.s})`],
+    ["Vs the field", `${signed(gained)} per round`],
+    ["Record vs others", rec],
+    ["Best hole", `Hole ${bestH + 1} (${fmt(ha[bestH])})`],
+    ["Worst hole", `Hole ${worstH + 1} (${fmt(ha[worstH])})`],
+    ["Holes at 9", `${holes.filter(h => h === MAX_SCORE).length} of ${holes.length}`],
+    ["Avg putts", putts.length ? `${fmt(putts.reduce((a, r) => a + r.total, 0) / putts.length)} over ${putts.length}` : "not counted"],
+  ];
+  return `<div class="twrap" data-player="${x.p}">
+    <div class="tcard" style="--c:${CARD_HEX[x.p]};--ring:${colorOf(x.p)}">
+      <div class="tface tfront" role="img" aria-label="${x.p}: overall ${ovr ?? "provisional"}, ${ATTRS.map(a => `${a.name} ${v[a.k] ?? "not rated"}`).join(", ")}">
+        <div class="ttop"><div class="tovr">${ovr === null ? `<b style="font-size:1.6rem;padding-top:8px">NEW</b><span>${x.rounds} round${x.rounds === 1 ? "" : "s"}</span>` : `<b>${ovr}</b><span>OVR</span>`}</div><div class="tarch">${arch}</div></div>
+        ${avatarHTML(x.p)}
+        <div class="tname">${x.p}</div>
+        <div class="tattrs">${ATTRS.map(a => `<div title="${a.name}: ${a.how}"><b>${v[a.k] ?? "-"}</b><span>${a.k}</span></div>`).join("")}</div>
+        <div class="tfoot">Golfparken Aalborg · ${x.rounds} round${x.rounds === 1 ? "" : "s"} · avg ${fmt(x.avg)}</div>
+      </div>
+      <div class="tface tback">
+        <h3>${x.p} <span class="num muted">${fmt(x.avg)}</span></h3>
+        ${spark(x.list)}
+        <dl>${items.map(([k, val]) => `<dt>${k}</dt><dd>${val}</dd>`).join("")}</dl>
+      </div>
+    </div>
+    <div class="tactions">
+      <button type="button" data-act="flip" aria-pressed="false">Flip</button>
+      <button type="button" data-act="save">Save card</button>
+      <button type="button" data-act="follow" aria-pressed="false">Follow</button>
+    </div>
+  </div>`;
+}).join("");
+
+el("profilecards").addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const wrap = b.closest(".twrap"), p = wrap.dataset.player;
+  if (b.dataset.act === "flip") { wrap.classList.toggle("flipped"); b.setAttribute("aria-pressed", String(wrap.classList.contains("flipped"))); }
+  if (b.dataset.act === "follow") toggleFocus(p);
+  if (b.dataset.act === "save") saveCard(cardData.find(c => c.x.p === p), b);
+});
+// Tilt toward the pointer, with a moving glare; skipped for touch and reduced motion
+if (!reduceMotion) {
+  el("profilecards").addEventListener("pointermove", e => {
+    if (e.pointerType !== "mouse") return;
+    const wrap = e.target.closest(".twrap"); if (!wrap || !e.target.closest(".tcard")) return;
+    const r = wrap.querySelector(".tcard").getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    const card = wrap.querySelector(".tcard");
+    wrap.classList.add("tilting");
+    card.style.setProperty("--rx", `${(0.5 - py) * 14}deg`);
+    card.style.setProperty("--ry", `${(px - 0.5) * 18}deg`);
+    card.style.setProperty("--gx", `${px * 100}%`);
+    card.style.setProperty("--gy", `${py * 100}%`);
+  });
+  el("profilecards").addEventListener("pointerout", e => {
+    const wrap = e.target.closest(".twrap");
+    if (!wrap || wrap.contains(e.relatedTarget)) return;
+    wrap.classList.remove("tilting");
+    const card = wrap.querySelector(".tcard");
+    ["--rx", "--ry"].forEach(k => card.style.setProperty(k, "0deg"));
+  });
+}
+
+// Draw a card onto a canvas and download it as a PNG
+async function saveCard(cd, btn) {
+  const { x, v, ovr, arch } = cd;
+  const S = 2, W = 300 * S, H = 420 * S, c = CARD_HEX[x.p];
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const g = cv.getContext("2d");
+  const label = btn.textContent; btn.textContent = "Saving…";
+  try {
+    await Promise.all(["800 48px Archivo", "500 12px 'IBM Plex Mono'"].map(f => document.fonts ? document.fonts.load(f) : null));
+    const mix = (hex, to, t) => { const n = parseInt(hex.slice(1), 16), m = to === "#fff" ? 255 : 0; return `rgb(${[16, 8, 0].map(sh => Math.round(((n >> sh) & 255) * (1 - t) + m * t)).join(",")})`; };
+    const round = (x0, y0, w, h, r) => { g.beginPath(); g.moveTo(x0 + r, y0); g.arcTo(x0 + w, y0, x0 + w, y0 + h, r); g.arcTo(x0 + w, y0 + h, x0, y0 + h, r); g.arcTo(x0, y0 + h, x0, y0, r); g.arcTo(x0, y0, x0 + w, y0, r); g.closePath(); };
+    round(0, 0, W, H, 14 * S); g.save(); g.clip();
+    const grad = g.createLinearGradient(0, 0, W * 0.6, H);
+    grad.addColorStop(0, mix(c, "#fff", 0.55)); grad.addColorStop(0.38, c); grad.addColorStop(1, mix(c, "#000", 0.5));
+    g.fillStyle = grad; g.fillRect(0, 0, W, H);
+    g.strokeStyle = "rgba(255,255,255,0.07)"; g.lineWidth = 2 * S;
+    for (let i = -H; i < W; i += 12 * S) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i + H, H); g.stroke(); }
+    g.restore();
+    round(7 * S, 7 * S, W - 14 * S, H - 14 * S, 10 * S); g.strokeStyle = "rgba(255,255,255,0.55)"; g.lineWidth = 1.5 * S; g.stroke();
+    g.fillStyle = "#fff"; g.textBaseline = "alphabetic";
+    g.textAlign = "center"; g.font = `800 ${(ovr === null ? 28 : 48) * S}px Archivo`; g.fillText(ovr === null ? "NEW" : String(ovr), 52 * S, 62 * S);
+    g.font = `500 ${10 * S}px 'IBM Plex Mono'`; g.fillText(ovr === null ? `${x.rounds} ROUND${x.rounds === 1 ? "" : "S"}` : "OVR", 52 * S, 78 * S);
+    g.textAlign = "right"; g.fillText(arch.toUpperCase(), W - 22 * S, 36 * S);
+    // Avatar, cropped the same way the page crops it (zoomed 180%, centred at 50% 42%)
+    const img = new Image(); img.src = AVATARS[x.p];
+    await img.decode();
+    const d = 120 * S, cx = W / 2, cy = 140 * S;
+    g.save(); g.beginPath(); g.arc(cx, cy, d / 2, 0, Math.PI * 2); g.clip();
+    const iw = d * 1.8, ih = iw * img.naturalHeight / img.naturalWidth;
+    g.drawImage(img, cx - d / 2 + (d - iw) * 0.5, cy - d / 2 + (d - ih) * 0.42, iw, ih);
+    g.restore();
+    g.beginPath(); g.arc(cx, cy, d / 2 + 1.5 * S, 0, Math.PI * 2); g.strokeStyle = "rgba(255,255,255,0.85)"; g.lineWidth = 3 * S; g.stroke();
+    g.textAlign = "center"; g.font = `800 ${30 * S}px Archivo`; g.fillText(x.p.toUpperCase(), cx, 238 * S);
+    g.fillStyle = "rgba(255,255,255,0.55)"; g.fillRect(cx - 70 * S, 248 * S, 140 * S, 1.5 * S);
+    g.fillStyle = "#fff";
+    ATTRS.forEach((a, i) => {
+      const colX = i % 2 ? W / 2 + 22 * S : W / 2 - 78 * S, rowY = 292 * S + Math.floor(i / 2) * 30 * S;
+      g.textAlign = "right"; g.font = `800 ${21 * S}px Archivo`; g.fillText(String(v[a.k] ?? "-"), colX + 30 * S, rowY);
+      g.textAlign = "left"; g.font = `500 ${13 * S}px 'IBM Plex Mono'`; g.fillText(a.k, colX + 38 * S, rowY);
+    });
+    g.textAlign = "center"; g.font = `500 ${9 * S}px 'IBM Plex Mono'`; g.fillStyle = "rgba(255,255,255,0.85)";
+    g.fillText(`GOLFPARKEN AALBORG · ${x.rounds} ROUND${x.rounds === 1 ? "" : "S"} · AVG ${fmt(x.avg)}`, cx, H - 22 * S);
+    const blob = await new Promise(res => cv.toBlob(res, "image/png"));
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = `${x.p.toLowerCase()}-golf-card.png`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    btn.textContent = "Saved";
+  } catch (err) {
+    btn.textContent = "Could not save";
+  }
+  setTimeout(() => (btn.textContent = label), 1800);
+}
 
 // Scorecards
 const heat = v => {
@@ -967,6 +1214,190 @@ el("tabs").addEventListener("click", e => { const b = e.target.closest("button")
 let start = sessions[sessions.length - 1];
 try { const v = +localStorage.getItem("golf-session"); if (sessions.includes(v)) start = v; } catch (e) {}
 showSession(start);
+
+// Shared hover tooltip for dot charts
+const tip = el("tip");
+function showTip(html, e) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  tip.style.left = Math.min(innerWidth - r.width - 8, e.clientX + 14) + "px";
+  tip.style.top = Math.max(8, e.clientY - r.height - 12) + "px";
+}
+const hideTip = () => (tip.hidden = true);
+
+// Hero spotlight on the season leader, with a sparkline of their rounds
+(function drawSpotlight() {
+  const x = players[0];
+  const w = 260, h = 46, lo = Math.min(...x.list.map(r => r.total)) - 3, hi = Math.max(...x.list.map(r => r.total)) + 3;
+  const px = s => 6 + (s - 1) * (w - 12) / (sessions.length - 1), py = v => 6 + (v - lo) * (h - 12) / (hi - lo);
+  const d = x.list.map((r, i) => (i ? "L" : "M") + px(r.s).toFixed(1) + " " + py(r.total).toFixed(1)).join(" ");
+  const sp = el("spotlight");
+  sp.style.setProperty("--ring", CARD_HEX[x.p]);
+  sp.innerHTML = `${avatarHTML(x.p)}<span class="lbl">Season leader</span><span class="nm">${x.p}</span>
+    <span class="ln">Averaging ${fmt(x.avg)}, ${x.wins} of ${x.rounds} sessions won, best ${x.best}</span>
+    <svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><path class="spot-line" d="${d}" fill="none" stroke="#fff" stroke-width="2.5"/>
+    ${x.list.map(r => `<circle cx="${px(r.s)}" cy="${py(r.total)}" r="3" fill="#fff"/>`).join("")}</svg>`;
+})();
+
+// Story: every round as a dot, rearranged for each step
+(function drawStory() {
+  const W = 640, H = 420, m = { l: 96, r: 24, t: 34, b: 44 };
+  const svg = el("storysvg");
+  const lowest = [...rows].sort((a, b) => a.total - b.total);
+  const latest = sessions[sessions.length - 1];
+  // Current streak: sessions in a row won by the latest winner
+  const champ = winners[latest][0];
+  let streak = 0;
+  for (let i = sessions.length - 1; i >= 0 && winners[sessions[i]].includes(champ); i--) streak++;
+  const chase = regulars.slice(1, 4);
+  const lead = regulars[0], gapToLead = chase[0].avg - lead.avg;
+  const spread = chase[chase.length - 1].avg - chase[0].avg;
+
+  const lin = (d0, d1, r0, r1) => v => r0 + (v - d0) * (r1 - r0) / (d1 - d0);
+  const yMid = (m.t + H - m.b) / 2;
+  // Stack equal values so dots never sit on top of each other
+  const stack = (list, key) => {
+    const seen = {};
+    return list.map(r => { const k = key(r); const n = seen[k] = (seen[k] || 0) + 1; return (n % 2 ? 1 : -1) * Math.floor(n / 2); });
+  };
+  const xT = lin(26, 52, m.l, W - m.r);
+  const rowY = p => m.t + 20 + players.findIndex(x => x.p === p) * ((H - m.t - m.b - 20) / (players.length - 1 || 1));
+  const sorted = [...rows].sort((a, b) => a.total - b.total || playerOrder.indexOf(a.p) - playerOrder.indexOf(b.p));
+  const stripOff = stack(sorted, r => r.total);
+  const rowOff = stack(sorted, r => r.p + "|" + r.total);
+  const xS = lin(0.5, sessions.length + 0.5, m.l, W - m.r), yS = lin(26, 52, m.t, H - m.b);
+  const sessOff = stack(sorted, r => r.s + "|" + r.total);
+  const zoom = lin(Math.floor(chase[0].avg - 6), Math.ceil(chase[chase.length - 1].avg + 6), m.l, W - m.r);
+
+  const states = [
+    { ax: "strip", pos: (r, i) => [xT(r.total), yMid + stripOff[i] * 17], op: () => 1 },
+    { ax: "rows", pos: (r, i) => [xT(r.total), rowY(r.p) + rowOff[i] * 7], op: r => r.p === lead.p ? 1 : 0.55 },
+    { ax: "sess", pos: (r, i) => [xS(r.s) + sessOff[i] * 15, yS(r.total)], op: r => winners[r.s].includes(r.p) ? 1 : 0.3, ring: r => winners[r.s].includes(r.p) && r.p === champ && r.s > latest - streak },
+    { ax: "zoom", pos: (r, i) => [zoom(r.total), rowY(r.p) + rowOff[i] * 7], op: r => chase.some(c => c.p === r.p) ? 1 : 0.12 },
+    { ax: "strip", pos: (r, i) => [xT(r.total), yMid + stripOff[i] * 17], op: r => r === lowest[0] || r === lowest[1] ? 1 : 0.2, ring: r => r === lowest[0] || r === lowest[1] },
+  ];
+  const steps = [
+    ["25 rounds", `Every round of the season is a dot, placed by its total. The best is ${lowest[0].total}, the worst ${lowest[lowest.length - 1].total}, and the field averages ${fmt(fieldAvg)}.`],
+    ["One player stands apart", `Sort the dots by player and ${lead.p} sits on their own, averaging ${fmt(lead.avg)}: ${fmt(gapToLead)} strokes better than anyone else who has played more than once.`],
+    [`${streak > 1 ? `${streak} wins in a row` : "Session winners"}`, `By session, with the winners at full color. ${streak > 1 ? `${champ} has won the last ${streak} sessions, ringed here.` : `${champ} won the latest session.`}`],
+    ["The race for second", `Zoom in on the chasers: ${chase.map(c => `${c.p} ${fmt(c.avg)}`).join(", ")}. Only ${fmt(spread)} strokes separate them, so one good round changes the order.`],
+    ["The two lowest rounds", `${lowest[0].p} shot ${lowest[0].total} in session ${lowest[0].s}${players.find(x => x.p === lowest[0].p).rounds === 1 ? ", their only round" : ""}, and ${lowest[1].p} shot ${lowest[1].total} in session ${lowest[1].s}. The next best round is ${lowest[2].total}.`],
+  ];
+  el("steps").innerHTML = steps.map(([h, p], i) => `<div class="step" data-step="${i}"><div><span class="n">${i + 1} of ${steps.length}</span><h3>${h}</h3><p>${p}</p></div></div>`).join("");
+
+  // Axes for each arrangement, faded in and out
+  let ax = `<g class="ax" data-ax="strip">${[30, 35, 40, 45, 50].map(v => `<line x1="${xT(v)}" x2="${xT(v)}" y1="${m.t}" y2="${H - m.b}" stroke="var(--rule)"/><text x="${xT(v)}" y="${H - m.b + 18}" text-anchor="middle">${v}</text>`).join("")}<text x="${W - m.r}" y="${H - 8}" text-anchor="end">strokes per round, lower is better</text>
+    <line x1="${xT(fieldAvg)}" x2="${xT(fieldAvg)}" y1="${m.t - 10}" y2="${H - m.b}" stroke="var(--ink)" stroke-dasharray="4 4"/><text x="${xT(fieldAvg) + 6}" y="${m.t - 2}" style="fill:var(--ink)">average ${fmt(fieldAvg)}</text></g>`;
+  const rowLabels = (scale, ticks) => `${ticks.map(v => `<line x1="${scale(v)}" x2="${scale(v)}" y1="${m.t}" y2="${H - m.b}" stroke="var(--rule)"/><text x="${scale(v)}" y="${H - m.b + 18}" text-anchor="middle">${v}</text>`).join("")}
+    ${players.map(x => `<g><clipPath id="sc-${x.p}"><circle cx="${m.l - 76}" cy="${rowY(x.p)}" r="12"/></clipPath>
+      <image href="${AVATARS[x.p]}" x="${m.l - 76 - 21.6}" y="${rowY(x.p) - 12 - 7.7}" width="43.2" height="43.2" preserveAspectRatio="xMidYMin slice" clip-path="url(#sc-${x.p})"/>
+      <text x="${m.l - 58}" y="${rowY(x.p) + 4}" class="sname">${x.p}</text>
+      ${scale(x.avg) >= m.l && scale(x.avg) <= W - m.r ? `<line x1="${scale(x.avg)}" x2="${scale(x.avg)}" y1="${rowY(x.p) - 13}" y2="${rowY(x.p) + 13}" stroke="var(--ink)" stroke-width="2"/>` : ""}</g>`).join("")}
+    <text x="${W - m.r}" y="${H - 8}" text-anchor="end">strokes per round · black tick is the player's average</text>`;
+  ax += `<g class="ax" data-ax="rows">${rowLabels(xT, [30, 35, 40, 45, 50])}</g>`;
+  ax += `<g class="ax" data-ax="zoom">${rowLabels(zoom, [...Array(20)].map((_, i) => Math.floor(chase[0].avg - 6) + i).filter(v => v % 2 === 0 && zoom(v) <= W - m.r))}</g>`;
+  ax += `<g class="ax" data-ax="sess">${[30, 35, 40, 45, 50].map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${yS(v)}" y2="${yS(v)}" stroke="var(--rule)"/><text x="${m.l - 10}" y="${yS(v) + 4}" text-anchor="end">${v}</text>`).join("")}
+    ${sessions.map(s => `<text x="${xS(s)}" y="${H - m.b + 18}" text-anchor="middle">S${s}</text>`).join("")}<text x="${m.l - 10}" y="${m.t - 12}" text-anchor="end">strokes</text></g>`;
+  const dots = sorted.map((r, i) => `<g class="sdot" data-player="${r.p}" data-i="${i}" style="transition-delay:${(i * 18)}ms"><circle r="7.5" fill="${colorOf(r.p)}" stroke="var(--paper)" stroke-width="2"><title>${r.p}, session ${r.s}: ${r.total}</title></circle></g>`).join("");
+  svg.innerHTML = ax + dots;
+
+  function show(k) {
+    const st = states[k];
+    svg.querySelectorAll(".ax").forEach(a => a.classList.toggle("on", a.dataset.ax === st.ax));
+    svg.querySelectorAll(".sdot").forEach(g => {
+      const r = sorted[+g.dataset.i];
+      const [x, y] = st.pos(r, +g.dataset.i);
+      g.style.transform = `translate(${x}px, ${y}px)`;
+      const c = g.firstElementChild;
+      c.style.opacity = st.op(r);
+      c.setAttribute("stroke", st.ring && st.ring(r) ? "var(--ink)" : "var(--paper)");
+      c.setAttribute("stroke-width", st.ring && st.ring(r) ? 3 : 2);
+    });
+    el("steps").querySelectorAll(".step").forEach(s => s.classList.toggle("on", +s.dataset.step === k));
+  }
+  show(0);
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) show(+e.target.dataset.step); }), { rootMargin: "-45% 0px -45% 0px" });
+    el("steps").querySelectorAll(".step").forEach(s => io.observe(s));
+  }
+})();
+
+// Every hole ever played: a unit chart, one dot per hole score
+(function drawDots() {
+  const W = 960, H = 480, m = { l: 70, r: 12, t: 44, b: 38 };
+  const colW = (W - m.l - m.r) / HOLES, values = [3, 4, 5, 6, 7, 8, 9];
+  const rowH = (H - m.t - m.b) / values.length, step = 12.5, perLine = Math.floor((colW - 18) / step);
+  const yOf = v => m.t + (v - 3) * rowH;
+  let g = "";
+  values.forEach(v => {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${yOf(v)}" y2="${yOf(v)}" stroke="var(--rule)"/>`;
+    g += `<text x="${m.l - 10}" y="${yOf(v) + rowH / 2 + 4}" text-anchor="end"${v === PAR || v === MAX_SCORE ? ' style="fill:var(--ink)"' : ""}>${v === PAR ? "3 par" : v === MAX_SCORE ? "9 max" : v}</text>`;
+  });
+  for (let i = 0; i < HOLES; i++) {
+    const x0 = m.l + i * colW;
+    if (i) g += `<line x1="${x0}" x2="${x0}" y1="${m.t}" y2="${H - m.b}" stroke="var(--rule)"/>`;
+    g += `<text x="${x0 + colW / 2}" y="${m.t - 18}" text-anchor="middle" style="fill:var(--ink);font-size:14px">Hole ${i + 1}</text><text x="${x0 + colW / 2}" y="${m.t - 4}" text-anchor="middle">avg ${fmt(holeAvg[i])}</text>`;
+    values.forEach(v => {
+      const cell = rows.filter(r => r.h[i] === v).sort((a, b) => playerOrder.indexOf(a.p) - playerOrder.indexOf(b.p) || a.s - b.s);
+      cell.forEach((r, j) => {
+        const cx = x0 + 12 + (j % perLine) * step, cy = yOf(v) + rowH / 2 + (Math.floor(j / perLine) - (cell.length > perLine ? 0.5 : 0)) * step;
+        const capped = r.raw[i] > v ? `, scored ${r.raw[i]} and capped` : "";
+        g += `<g class="hdot" data-player="${r.p}" data-tip="${r.p} · session ${r.s} · hole ${i + 1}: <b>${v}</b> (${toPar(v - PAR)})${capped}"><circle class="hit" cx="${cx}" cy="${cy}" r="7.5"/><circle class="mark" cx="${cx}" cy="${cy}" r="5" fill="${colorOf(r.p)}"/></g>`;
+      });
+    });
+  }
+  el("dotchart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Every hole score as a dot, by hole and number of strokes">${g}</svg>`;
+  el("dotlegend").innerHTML = playerOrder.map(p => `<span data-player="${p}"><span class="swatch" style="background:${colorOf(p)}"></span>${p}</span>`).join("");
+  const svg = el("dotchart").firstElementChild;
+  svg.addEventListener("pointermove", e => { const d = e.target.closest(".hdot"); d ? showTip(d.dataset.tip, e) : hideTip(); });
+  svg.addEventListener("pointerleave", hideTip);
+})();
+
+// Scroll-in effects: sections rise in, lines draw themselves, bars grow, numbers count up
+(function reveals() {
+  if (reduceMotion || !("IntersectionObserver" in window)) return;
+  const once = (nodes, fn, opts) => {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); fn(e.target); } }), opts || { threshold: 0.2 });
+    nodes.forEach(n => n && io.observe(n));
+  };
+  const secs = [...document.querySelectorAll(".wrap > section")].filter(s => s.getBoundingClientRect().top > innerHeight);
+  secs.forEach(s => s.classList.add("pre"));
+  once(secs, s => { s.classList.add("revealed"); s.classList.remove("pre"); }, { threshold: 0.05 });
+
+  const drawLines = box => box.querySelectorAll("path[fill='none']:not([stroke-dasharray])").forEach((p, i) => {
+    const len = p.getTotalLength(); if (!len) return;
+    p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+    p.getBoundingClientRect();
+    p.style.transition = `stroke-dashoffset 1.4s cubic-bezier(.3,.7,.2,1) ${i * 90}ms`;
+    p.style.strokeDashoffset = 0;
+    p.addEventListener("transitionend", () => { p.style.strokeDasharray = ""; p.style.transition = ""; }, { once: true });
+  });
+  once([el("trendchart"), el("racechart"), document.querySelector("#spotlight svg")], drawLines, { threshold: 0.4 });
+
+  once([el("holechart")], box => box.querySelectorAll("rect").forEach((r, i) => {
+    r.style.transformBox = "fill-box"; r.style.transformOrigin = "bottom"; r.style.transform = "scaleY(0)";
+    r.getBoundingClientRect();
+    r.style.transition = `transform 0.9s cubic-bezier(.3,.7,.2,1) ${i * 80}ms`; r.style.transform = "";
+  }), { threshold: 0.4 });
+
+  once([el("dotchart")], box => box.querySelectorAll(".hdot .mark").forEach((c, i) => {
+    c.style.transformBox = "fill-box"; c.style.transformOrigin = "center"; c.style.transform = "scale(0)";
+    c.getBoundingClientRect();
+    c.style.transition = `transform 0.45s cubic-bezier(.3,1.5,.5,1) ${Math.min(i * 6, 900)}ms`; c.style.transform = "";
+  }), { threshold: 0.25 });
+
+  // Count the headline numbers up from zero
+  el("stats").querySelectorAll(".v").forEach(n => {
+    const m = n.textContent.match(/^(#?)(\d+(?:\.\d+)?)$/); if (!m) return;
+    const end = +m[2], dec = (m[2].split(".")[1] || "").length, t0 = performance.now(), dur = 1100;
+    const tick = t => {
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      n.textContent = m[1] + (end * e).toFixed(dec);
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+})();
 
 // Follow-a-player chips, summary and the shareable ?player= link
 el("chips").innerHTML = players.map(x => `<button type="button" class="chip" aria-pressed="false" data-chip="${x.p}" style="--ring:${colorOf(x.p)}">${avatarHTML(x.p)}${x.p}</button>`).join("");
