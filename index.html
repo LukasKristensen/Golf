@@ -26,6 +26,7 @@
   --heat-ink: #1d2620;
   --p1: #1d7a48; --p2: #3b6fb6; --p3: #c27a12; --p4: #9b4aa8; --p5: #b8432f; --p6: #00899f;
   --d3: #2f6b4a; --d4: #6f9e6a; --d5: #a9c07d; --d6: #e0cf86; --d7: #e9ab6c; --d8: #d9805e; --d9: #b8432f;
+  --c-rough: #b5c47f; --c-fairway: #8dbd5c; --c-green: #5ea84a; --c-tree: #3f6e3a; --c-shadow: rgba(20,40,20,0.35); --c-sand: #ecdfb2; --c-path: #d9d0b6; --c-building: #b8b3aa; --c-tee: #2f6b4a;
   --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --body: "Source Serif 4", Georgia, serif;
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
@@ -37,6 +38,7 @@
   --heat-ink: #e5ebe6;
   --p1: #3f9c68; --p2: #5a87cc; --p3: #bd7f22; --p4: #a96ab7; --p5: #cc5a43; --p6: #13979f;
   --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
+  --c-rough: #34452b; --c-fairway: #47643a; --c-green: #5a8a47; --c-tree: #1e3420; --c-shadow: rgba(0,0,0,0.45); --c-sand: #9a8c62; --c-path: #5e5849; --c-building: #4b4a46; --c-tee: #1d2620;
   color-scheme: dark;
 } }
 :root[data-theme="dark"] {
@@ -46,6 +48,7 @@
   --heat-ink: #e5ebe6;
   --p1: #3f9c68; --p2: #5a87cc; --p3: #bd7f22; --p4: #a96ab7; --p5: #cc5a43; --p6: #13979f;
   --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
+  --c-rough: #34452b; --c-fairway: #47643a; --c-green: #5a8a47; --c-tree: #1e3420; --c-shadow: rgba(0,0,0,0.45); --c-sand: #9a8c62; --c-path: #5e5849; --c-building: #4b4a46; --c-tee: #1d2620;
   color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
@@ -303,6 +306,38 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 .twrap.hl .tfront { box-shadow: 0 0 0 3px var(--ink), 0 10px 28px rgba(0,0,0,0.25); }
 .rating-note { font-size: 0.9rem; }
 
+/* Course: a strip of hole cards and a detail view of the chosen hole */
+.holestrip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.hcard { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 0; overflow: hidden; cursor: pointer; display: grid; text-align: left; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.hcard:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+.hcard[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+.hcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hcard svg { display: block; width: 100%; height: auto; aspect-ratio: 891 / 1660; }
+.hc-top { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 10px; color: var(--heat-ink); font-family: var(--mono); font-size: 0.78rem; }
+.hc-top b { font-family: var(--display); font-stretch: 75%; font-size: 1.4rem; line-height: 1; }
+.hc-foot { padding: 6px 10px; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+.hc-foot .num { color: var(--ink); font-size: 0.95rem; }
+.hole-detail { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 6px; }
+.hole-detail .chart-card { padding: 0; overflow: hidden; }
+.hole-detail .chart-card svg.hole-big { display: block; width: 100%; height: auto; min-width: 0; }
+#holeinfo { display: grid; gap: 12px; align-content: start; }
+.hole-title { font-size: 1.6rem; }
+.hole-stats { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 0; }
+.hole-stats dt { color: var(--muted); }
+.hole-stats dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.hole-dist { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; height: 120px; margin-top: 6px; max-width: 360px; }
+.hole-dist > div { display: grid; grid-template-rows: 1fr auto auto; align-items: end; justify-items: center; height: 100%; }
+.hd-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 2px; }
+.hd-n { font-size: 0.75rem; color: var(--ink); }
+.hd-v { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--ink); width: 100%; text-align: center; }
+.course-note { font-size: 0.85rem; }
+@media (max-width: 760px) {
+  .holestrip { grid-template-columns: repeat(6, 128px); overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+  .hcard { scroll-snap-align: start; }
+  .hole-detail { grid-template-columns: 1fr; }
+  .hole-detail .chart-card { max-width: 300px; justify-self: center; width: 100%; }
+}
+
 /* Scroll-in reveals; only applied when motion is allowed */
 .pre { opacity: 0; transform: translateY(24px); }
 .revealed { opacity: 1; transform: none; transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.3,.7,.2,1); }
@@ -331,7 +366,7 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
     </div>
   </header>
 
-  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
+  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#course">Course</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
 
   <section>
     <div class="stats" id="stats"></div>
@@ -402,6 +437,18 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
       <div id="trendchart"></div>
       <p class="muted" style="font-size:0.85rem">A dashed line skips sessions the player missed. Click a name to hide or show that player.</p>
     </div>
+  </section>
+
+  <section id="course">
+    <span class="eyebrow">The course</span>
+    <h2>Six par 3s at Golfparken</h2>
+    <p>Each hole drawn from above, tinted by how hard it plays for this group. Pick a hole to see its numbers; following a player switches them to that player's scores.</p>
+    <div class="holestrip" id="holestrip" role="group" aria-label="Holes"></div>
+    <div class="hole-detail">
+      <div class="chart-card" id="holeart"></div>
+      <div id="holeinfo" aria-live="polite"></div>
+    </div>
+    <p class="course-note muted">Hole drawings are simplified tracings of overhead imagery, not to scale. Lengths are tee to pin from the group's golf app.</p>
   </section>
 
   <section id="holes">
@@ -1399,6 +1446,164 @@ const hideTip = () => (tip.hidden = true);
   });
 })();
 
+// The course: hand-traced, simplified drawings of each hole from overhead screenshots.
+// Coordinates are in the screenshots' pixel space (891 wide, map area from y 125 to 1785), tee at the bottom, pin near the top.
+// Distances are tee to pin as shown in the group's golf app, in metres.
+const COURSE = [
+  { dist: 146, tee: [230, 1470], pin: [731, 432], green: [735, 425, 95, 70],
+    fairway: "130,1500 300,1440 560,1230 760,1020 880,820 880,480 700,430 600,540 470,800 360,1080 220,1300",
+    bunkers: [[742, 545, 34, 20], [148, 878, 22, 20]],
+    trees: [[60, 200, 110], [180, 170, 90], [120, 380, 120], [60, 560, 100], [150, 650, 90], [90, 760, 70],
+      [520, 330, 70], [480, 470, 90], [420, 600, 90], [380, 760, 100], [300, 870, 90], [250, 1000, 110], [200, 1150, 100], [150, 1300, 100], [90, 1430, 90],
+      [690, 170, 90], [820, 170, 80], [870, 300, 60], [720, 1250, 100], [840, 1150, 80], [560, 1560, 110], [420, 1650, 100], [260, 1700, 90]],
+    paths: ["M0,1620 Q400,1450 891,880", "M60,1700 Q450,1500 891,960"],
+    buildings: ["650,1420 800,1370 891,1440 891,1600 760,1640 650,1560"] },
+  { dist: 121, tee: [250, 1390], pin: [717, 447], green: [720, 440, 90, 70],
+    fairway: "230,1420 360,1360 560,1170 880,900 880,560 760,520 520,560 420,640 330,900 250,1180",
+    bunkers: [[705, 580, 30, 18]],
+    trees: [[400, 280, 110], [520, 230, 110], [650, 250, 100], [720, 330, 70], [460, 420, 100], [560, 420, 90], [360, 400, 70],
+      [90, 720, 110], [160, 800, 100], [80, 920, 120], [180, 960, 80], [60, 1080, 90],
+      [600, 1450, 110], [760, 1350, 100], [860, 1250, 80], [450, 1600, 100], [300, 1700, 90], [860, 1100, 60]],
+    paths: ["M0,1690 Q450,1350 891,960", "M0,1780 Q480,1430 891,1040"],
+    buildings: ["540,1560 700,1530 760,1600 720,1785 480,1785 470,1680"] },
+  { dist: 106, tee: [200, 1180], pin: [695, 460], green: [680, 450, 90, 70],
+    fairway: "40,1300 120,1050 260,820 330,560 420,420 600,330 760,230 790,310 720,520 560,700 380,900 230,1150 120,1380",
+    bunkers: [[38, 1068, 26, 16]],
+    trees: [[75, 255, 25], [140, 330, 25], [150, 270, 22], [120, 350, 22], [230, 450, 22], [65, 500, 28], [165, 540, 22], [265, 670, 22], [470, 540, 28],
+      [415, 880, 26], [220, 885, 26], [75, 620, 24], [560, 300, 15], [440, 340, 14], [20, 720, 60], [10, 820, 50],
+      [760, 1000, 90], [860, 900, 80], [650, 1200, 100], [820, 1250, 90], [550, 1400, 90], [480, 1550, 90], [700, 1500, 80], [400, 1700, 90], [860, 700, 40]],
+    paths: ["M60,1785 Q500,1150 891,640", "M150,1785 Q560,1220 891,760"],
+    buildings: ["820,1080 891,1040 891,1250 840,1260", "820,1360 891,1330 891,1480"] },
+  { dist: 166, tee: [125, 1500], pin: [731, 430], green: [725, 420, 90, 70],
+    fairway: "90,1420 190,1180 360,900 420,740 470,580 620,520 800,440 820,700 760,960 600,1160 420,1310 250,1460",
+    bunkers: [[745, 620, 30, 18], [245, 140, 26, 12]],
+    trees: [[240, 560, 100], [300, 650, 110], [220, 720, 110], [330, 760, 90], [160, 620, 80], [250, 480, 70],
+      [850, 650, 70], [870, 780, 60], [60, 200, 90], [150, 230, 70], [600, 200, 80], [720, 170, 90], [840, 220, 60],
+      [205, 890, 20], [270, 935, 22], [210, 975, 20], [330, 1045, 25], [400, 1050, 20], [230, 1045, 18], [80, 1130, 22], [100, 965, 20], [845, 470, 22], [490, 595, 15], [530, 345, 15],
+      [560, 1200, 80], [680, 1290, 100], [800, 1370, 100], [560, 1620, 80], [700, 1650, 90], [860, 1550, 80]],
+    paths: ["M0,1680 Q450,1350 891,1015"],
+    buildings: ["470,1380 540,1380 550,1460 480,1460"] },
+  { dist: 106, tee: [300, 1220], pin: [718, 453], green: [705, 440, 95, 70],
+    fairway: "160,1460 380,1280 560,1020 760,660 870,460 760,390 600,470 470,640 260,880 90,1120 110,1360",
+    bunkers: [[502, 800, 30, 34], [345, 815, 12, 10]],
+    trees: [[180, 520, 110], [300, 450, 120], [420, 380, 100], [260, 640, 110], [380, 600, 90], [170, 700, 80], [460, 280, 80], [560, 200, 70],
+      [850, 760, 70], [860, 920, 80], [870, 1080, 60], [640, 1300, 90], [760, 1400, 110], [870, 1500, 90], [680, 1520, 70], [770, 1600, 60], [20, 1100, 70], [60, 1460, 30]],
+    paths: [], buildings: [] },
+  { dist: 150, tee: [180, 1590], pin: [730, 438], green: [725, 425, 90, 70],
+    fairway: "70,1650 150,1250 260,1050 420,900 560,700 700,430 840,380 840,620 650,900 560,1000 520,1140 330,1110 280,1330 260,1650",
+    bunkers: [[410, 845, 28, 22]],
+    trees: [[540, 300, 70], [480, 420, 80], [400, 520, 90], [300, 620, 90], [200, 760, 100], [110, 880, 100], [30, 1000, 90], [560, 500, 50],
+      [400, 1000, 80], [440, 1150, 100], [380, 1300, 110], [420, 1450, 100], [330, 1570, 110], [450, 1650, 80],
+      [60, 250, 80], [200, 200, 70], [700, 190, 80], [800, 250, 70], [880, 500, 40]],
+    paths: ["M500,1785 Q640,1100 880,300"], buildings: [] },
+];
+
+function holeSVG(i, big) {
+  const h = COURSE[i];
+  const id = `h${i}${big ? "b" : "s"}`;
+  const [tx, ty] = h.tee, [px, py] = h.pin;
+  let s = `<svg viewBox="0 125 891 1660" ${big ? 'class="hole-big"' : ""} role="img" aria-label="Illustrated layout of hole ${i + 1}">`;
+  s += `<rect x="0" y="125" width="891" height="1660" fill="var(--c-rough)"/>`;
+  h.paths.forEach(d => s += `<path d="${d}" fill="none" stroke="var(--c-path)" stroke-width="16" stroke-linecap="round"/>`);
+  h.buildings.forEach(p => s += `<polygon points="${p}" fill="var(--c-building)"/>`);
+  s += `<polygon points="${h.fairway}" fill="var(--c-fairway)" stroke="var(--c-fairway)" stroke-width="60" stroke-linejoin="round"/>`;
+  s += `<ellipse cx="${h.green[0]}" cy="${h.green[1]}" rx="${h.green[2]}" ry="${h.green[3]}" fill="var(--c-green)" stroke="var(--c-fairway)" stroke-width="10"/>`;
+  h.bunkers.forEach(([cx, cy, rx, ry]) => s += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--c-sand)"/>`);
+  s += `<g fill="var(--c-shadow)">${h.trees.map(([cx, cy, r]) => `<circle cx="${cx + r * 0.18}" cy="${cy + r * 0.14}" r="${r}"/>`).join("")}</g>`;
+  s += `<g fill="var(--c-tree)">${h.trees.map(([cx, cy, r]) => `<circle cx="${cx}" cy="${cy}" r="${r}"/>`).join("")}</g>`;
+  // Line of play, tee box and flag
+  s += `<line class="lop" x1="${tx}" y1="${ty}" x2="${px}" y2="${py}" stroke="#fff" stroke-width="${big ? 5 : 8}" stroke-dasharray="${big ? "4 18" : "6 22"}" stroke-linecap="round" opacity="0.9"/>`;
+  s += `<rect x="${tx - 34}" y="${ty - 14}" width="68" height="28" rx="6" fill="var(--c-tee)" stroke="#fff" stroke-width="4"/>`;
+  s += `<line x1="${px}" y1="${py}" x2="${px}" y2="${py - 110}" stroke="#fff" stroke-width="7"/><path d="M${px} ${py - 110} l70 22 l-70 22z" fill="var(--flag)"/><circle cx="${px}" cy="${py}" r="9" fill="#fff"/>`;
+  if (big) s += `<circle class="ball" id="${id}ball" cx="${tx}" cy="${ty}" r="15" fill="#fff" stroke="#222" stroke-width="3" opacity="0"/>`;
+  return s + `</svg>`;
+}
+
+const HEAT_STEPS = a => a <= 4.5 ? 0 : a <= 6 ? 1 : a <= 7.25 ? 2 : a <= 8.25 ? 3 : 4;
+let courseHole = 0;
+const groupRank = [...holeAvg.keys()].sort((a, b) => holeAvg[b] - holeAvg[a]);
+
+(function drawCourse() {
+  el("holestrip").innerHTML = COURSE.map((h, i) => `<button type="button" class="hcard" data-hole="${i}" aria-pressed="false" aria-label="Hole ${i + 1}, ${h.dist} metres, averages ${fmt(holeAvg[i])}">
+    <span class="hc-top" style="background:var(--heat-${HEAT_STEPS(holeAvg[i])})"><b>${i + 1}</b><span>${h.dist} m</span></span>
+    ${holeSVG(i, false)}
+    <span class="hc-foot"><span class="num">${fmt(holeAvg[i])}</span> avg</span>
+  </button>`).join("");
+  el("holestrip").addEventListener("click", e => { const b = e.target.closest(".hcard"); if (b) showHole(+b.dataset.hole); });
+  el("holestrip").addEventListener("keydown", e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    showHole((courseHole + (e.key === "ArrowRight" ? 1 : HOLES - 1)) % HOLES, true);
+  });
+})();
+
+function holeStats(i, who) {
+  const rs = rows.filter(r => !who || r.p === who);
+  const sc = rs.map(r => ({ v: r.h[i], r }));
+  if (!sc.length) return null;
+  const avg = sc.reduce((a, x) => a + x.v, 0) / sc.length;
+  const best = Math.min(...sc.map(x => x.v));
+  const bestBy = [...new Set(sc.filter(x => x.v === best).map(x => x.r.p))];
+  const counts = [3, 4, 5, 6, 7, 8, 9].map(v => sc.filter(x => x.v === v).length);
+  return { n: sc.length, avg, best, bestBy, nines: counts[6], counts };
+}
+
+function showHole(i, focusCard) {
+  courseHole = i;
+  [...el("holestrip").children].forEach((b, j) => { b.setAttribute("aria-pressed", String(j === i)); b.tabIndex = j === i ? 0 : -1; });
+  if (focusCard) el("holestrip").children[i].focus();
+  const h = COURSE[i], g = holeStats(i), me = focus ? holeStats(i, focus) : null;
+  const rank = groupRank.indexOf(i) + 1;
+  const st = me || g;
+  const maxC = Math.max(...st.counts, 1);
+  el("holeart").innerHTML = holeSVG(i, true);
+  el("holeinfo").innerHTML = `
+    <span class="eyebrow">Hole ${i + 1} · par ${PAR} · ${h.dist} m</span>
+    <h3 class="hole-title">${rank === 1 ? "The hardest hole" : rank === HOLES ? "The easiest hole" : `The ${ordinalWord(rank)} hardest hole`} for the group</h3>
+    ${me ? `<p class="muted">Showing ${focus}'s ${me.n} round${me.n === 1 ? "" : "s"}; group figures in brackets.</p>` : focus ? `<p class="muted">${focus} has no rounds here.</p>` : ""}
+    <dl class="hole-stats">
+      <dt>Average</dt><dd>${fmt(st.avg)}${me ? ` <span class="muted">(${fmt(g.avg)})</span>` : ""}</dd>
+      <dt>Best score</dt><dd>${st.best} <span class="muted">${me ? "" : st.bestBy.join(", ")}</span></dd>
+      <dt>Ended on a 9</dt><dd>${Math.round(st.nines / st.n * 100)}%${me ? ` <span class="muted">(${Math.round(g.nines / g.n * 100)}%)</span>` : ""}</dd>
+      <dt>Club stroke index</dt><dd>${STROKE_INDEX[i]} <span class="muted">(club rates it ${rankByClub(i)} of ${HOLES} for difficulty)</span></dd>
+      <dt>Group difficulty</dt><dd>${rank} of ${HOLES}</dd>
+    </dl>
+    <div class="hole-dist" role="img" aria-label="How often each score happened on hole ${i + 1}">
+      ${st.counts.map((c, k) => `<div><span class="hd-bar" style="height:${c / maxC * 100}%;background:var(--d${k + 3})" title="${c} × ${k + 3}"></span><span class="hd-n num">${c || ""}</span><span class="hd-v">${k + 3}</span></div>`).join("")}
+    </div>`;
+  playBall(i);
+}
+const ordinalWord = n => ["", "", "second", "third", "fourth", "fifth"][n] || n + "th";
+const rankByClub = i => [...STROKE_INDEX].sort((a, b) => a - b).indexOf(STROKE_INDEX[i]) + 1;
+
+// Roll a ball along the line of play: a short hop for each stroke the group averages, finishing in the hole
+function playBall(i) {
+  const ball = el(`h${i}bball`); if (!ball) return;
+  const [tx, ty] = COURSE[i].tee, [px, py] = COURSE[i].pin;
+  if (reduceMotion) { ball.setAttribute("cx", px); ball.setAttribute("cy", py); ball.setAttribute("opacity", 1); return; }
+  const strokes = Math.max(2, Math.round(holeAvg[i]));
+  // The first shot covers most of the way, then shorter and shorter shots close in
+  const marks = [0]; let left = 1;
+  for (let k = 1; k < strokes; k++) { left *= k === 1 ? 0.25 : 0.45; marks.push(1 - left); }
+  marks.push(1);
+  ball.setAttribute("opacity", 1);
+  let k = 0;
+  const hop = () => {
+    if (k >= marks.length - 1 || !ball.isConnected) return;
+    const a = marks[k], b = marks[k + 1], t0 = performance.now(), dur = k === 0 ? 900 : 450;
+    const step = t => {
+      const u = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - u, 2), f = a + (b - a) * e;
+      ball.setAttribute("cx", tx + (px - tx) * f);
+      ball.setAttribute("cy", ty + (py - ty) * f - Math.sin(u * Math.PI) * (k === 0 ? 120 : 30));
+      ball.setAttribute("r", 15 + Math.sin(u * Math.PI) * (k === 0 ? 8 : 3));
+      if (u < 1) requestAnimationFrame(step); else { k++; setTimeout(hop, 160); }
+    };
+    requestAnimationFrame(step);
+  };
+  hop();
+}
+showHole(groupRank[0]);
+
 // Follow-a-player chips, summary and the shareable ?player= link
 el("chips").innerHTML = players.map(x => `<button type="button" class="chip" aria-pressed="false" data-chip="${x.p}" style="--ring:${colorOf(x.p)}">${avatarHTML(x.p)}${x.p}</button>`).join("");
 function setFocus(p) {
@@ -1417,6 +1622,7 @@ function setFocus(p) {
     el("focussummary").textContent = "Pick a name to pick them out in every chart and table below.";
   }
   el("following").hidden = !x;
+  showHole(courseHole);
   try {
     const u = new URL(location.href);
     x ? u.searchParams.set("player", x.p) : u.searchParams.delete("player");
