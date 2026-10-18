@@ -26,7 +26,7 @@
   --heat-ink: #1d2620;
   --p1: #1d7a48; --p2: #3b6fb6; --p3: #c27a12; --p4: #9b4aa8; --p5: #b8432f; --p6: #00899f;
   --d3: #2f6b4a; --d4: #6f9e6a; --d5: #a9c07d; --d6: #e0cf86; --d7: #e9ab6c; --d8: #d9805e; --d9: #b8432f;
-  --c-rough: #b5c47f; --c-fairway: #8dbd5c; --c-green: #5ea84a; --c-tree: #3f6e3a; --c-shadow: rgba(20,40,20,0.35); --c-sand: #ecdfb2; --c-path: #d9d0b6; --c-building: #b8b3aa; --c-tee: #2f6b4a;
+  --c-rough: #b5c47f; --c-fairway: #8dbd5c; --c-green: #5ea84a; --c-tree: #3f6e3a; --c-shadow: rgba(20,40,20,0.35); --c-sand: #ecdfb2; --c-path: #d9d0b6; --c-building: #b8b3aa; --c-tee: #2f6b4a; --c-town: #d8d6cc;
   --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --body: "Source Serif 4", Georgia, serif;
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
@@ -38,7 +38,7 @@
   --heat-ink: #e5ebe6;
   --p1: #3f9c68; --p2: #5a87cc; --p3: #bd7f22; --p4: #a96ab7; --p5: #cc5a43; --p6: #13979f;
   --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
-  --c-rough: #34452b; --c-fairway: #47643a; --c-green: #5a8a47; --c-tree: #1e3420; --c-shadow: rgba(0,0,0,0.45); --c-sand: #9a8c62; --c-path: #5e5849; --c-building: #4b4a46; --c-tee: #1d2620;
+  --c-rough: #34452b; --c-fairway: #47643a; --c-green: #5a8a47; --c-tree: #1e3420; --c-shadow: rgba(0,0,0,0.45); --c-sand: #9a8c62; --c-path: #5e5849; --c-building: #4b4a46; --c-tee: #1d2620; --c-town: #262a26;
   color-scheme: dark;
 } }
 :root[data-theme="dark"] {
@@ -48,7 +48,7 @@
   --heat-ink: #e5ebe6;
   --p1: #3f9c68; --p2: #5a87cc; --p3: #bd7f22; --p4: #a96ab7; --p5: #cc5a43; --p6: #13979f;
   --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
-  --c-rough: #34452b; --c-fairway: #47643a; --c-green: #5a8a47; --c-tree: #1e3420; --c-shadow: rgba(0,0,0,0.45); --c-sand: #9a8c62; --c-path: #5e5849; --c-building: #4b4a46; --c-tee: #1d2620;
+  --c-rough: #34452b; --c-fairway: #47643a; --c-green: #5a8a47; --c-tree: #1e3420; --c-shadow: rgba(0,0,0,0.45); --c-sand: #9a8c62; --c-path: #5e5849; --c-building: #4b4a46; --c-tee: #1d2620; --c-town: #262a26;
   color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
@@ -317,7 +317,7 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 .hc-top b { font-family: var(--display); font-stretch: 75%; font-size: 1.4rem; line-height: 1; }
 .hc-foot { padding: 6px 10px; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
 .hc-foot .num { color: var(--ink); font-size: 0.95rem; }
-.hole-detail { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 6px; }
+.hole-detail { display: grid; grid-template-columns: minmax(0, 290px) minmax(0, 230px) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 6px; }
 .hole-detail .chart-card { padding: 0; overflow: hidden; }
 .hole-detail .chart-card svg.hole-big { display: block; width: 100%; height: auto; min-width: 0; }
 #holeinfo { display: grid; gap: 12px; align-content: start; }
@@ -331,11 +331,23 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 .hd-n { font-size: 0.75rem; color: var(--ink); }
 .hd-v { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--ink); width: 100%; text-align: center; }
 .course-note { font-size: 0.85rem; }
+#coursemap { padding: 0; overflow: hidden; }
+#coursemap svg { display: block; width: 100%; height: auto; min-width: 0; }
+#coursemap svg text.mh-num { fill: var(--heat-ink); font-family: var(--display); font-weight: 800; font-size: 17px; pointer-events: none; }
+#coursemap svg text.mh-small { fill: var(--ink); font-size: 13px; }
+.maphole { cursor: pointer; }
+.maphole .mh-hit { fill: transparent; }
+.maphole:hover .mh-hit { fill: rgba(255,255,255,0.12); }
+.maphole.on .mh-hit { fill: rgba(255,255,255,0.18); stroke: #fff; stroke-width: 2; }
+.maphole.on .mh-badge { stroke-width: 4; }
+.maphole:not(.on) .mh-lop { opacity: 0.55; }
+.map-cap { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); padding: 8px 12px; border-top: 1px solid var(--rule); }
 @media (max-width: 760px) {
   .holestrip { grid-template-columns: repeat(6, 128px); overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
   .hcard { scroll-snap-align: start; }
   .hole-detail { grid-template-columns: 1fr; }
-  .hole-detail .chart-card { max-width: 300px; justify-self: center; width: 100%; }
+  #holeinfo { grid-column: 1 / -1; }
+  .hole-detail .chart-card { max-width: 340px; justify-self: center; width: 100%; }
 }
 
 /* Scroll-in reveals; only applied when motion is allowed */
@@ -442,9 +454,10 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
   <section id="course">
     <span class="eyebrow">The course</span>
     <h2>Six par 3s at Golfparken</h2>
-    <p>Each hole drawn from above, tinted by how hard it plays for this group. Pick a hole to see its numbers; following a player switches them to that player's scores.</p>
+    <p>The six holes on a map of the park, and each hole drawn on its own, tinted by how hard it plays for this group. Pick a hole to see its numbers; following a player switches them to that player's scores.</p>
     <div class="holestrip" id="holestrip" role="group" aria-label="Holes"></div>
     <div class="hole-detail">
+      <div class="chart-card"><div id="coursemap"></div><div class="map-cap">The loop: tap a hole · dotted line is the walk to the next tee</div></div>
       <div class="chart-card" id="holeart"></div>
       <div id="holeinfo" aria-live="polite"></div>
     </div>
@@ -1572,6 +1585,7 @@ function showHole(i, focusCard) {
       ${st.counts.map((c, k) => `<div><span class="hd-bar" style="height:${c / maxC * 100}%;background:var(--d${k + 3})" title="${c} × ${k + 3}"></span><span class="hd-n num">${c || ""}</span><span class="hd-v">${k + 3}</span></div>`).join("")}
     </div>`;
   playBall(i);
+  paintMap();
 }
 const ordinalWord = n => ["", "", "second", "third", "fourth", "fifth"][n] || n + "th";
 const rankByClub = i => [...STROKE_INDEX].sort((a, b) => a - b).indexOf(STROKE_INDEX[i]) + 1;
@@ -1603,6 +1617,106 @@ function playBall(i) {
   hop();
 }
 showHole(groupRank[0]);
+
+// Course map: the whole loop, traced from a north-up satellite overview (pixel space of an 875 x 1003 image, about 2 px per metre)
+const LOOP = [
+  { tee: [315, 132], pin: [328, 452], w: 50, bunkers: [[343, 438, 9, 6]] },
+  { tee: [292, 478], pin: [350, 700], w: 46, bunkers: [[340, 678, 8, 5]] },
+  { tee: [292, 628], pin: [306, 872], w: 48, bunkers: [] },
+  { tee: [340, 892], pin: [568, 652], w: 56, bunkers: [[566, 716, 8, 5]] },
+  { tee: [462, 690], pin: [466, 458], w: 40, bunkers: [[455, 528, 8, 6]] },
+  { tee: [480, 452], pin: [410, 138], w: 52, bunkers: [[418, 278, 9, 6]] },
+];
+const MAP_TREES = [
+  // Central tree line between the west and middle fairways
+  [355, 130, 16], [362, 175, 18], [366, 220, 18], [368, 265, 20], [372, 310, 20], [378, 355, 22], [385, 400, 22], [392, 445, 22], [398, 490, 24], [403, 535, 22], [400, 570, 16],
+  // Woods between hole 6 / 5 and the road
+  [515, 300, 14], [505, 350, 22], [522, 380, 30], [552, 420, 32], [580, 465, 32], [604, 510, 30], [630, 555, 26], [648, 595, 18], [505, 300, 14],
+  // The round clump beside hole 4, and the clump east of its green
+  [408, 670, 26], [420, 700, 30], [412, 735, 22], [610, 750, 26], [625, 785, 22],
+  // West boundary hedge
+  ...Array.from({ length: 19 }, (_, k) => [240, 100 + k * 46, 18]),
+  // Woods south of the path and across the road
+  [520, 890, 28], [580, 905, 30], [640, 870, 32], [690, 900, 30], [660, 960, 30], [560, 960, 26],
+  [655, 205, 30], [690, 240, 22], [665, 290, 12], [705, 350, 12], [735, 720, 18], [800, 715, 22], [725, 590, 10],
+  // Scattered single trees in the rough
+  [300, 745, 6], [330, 770, 5], [385, 790, 6], [410, 820, 6], [440, 770, 5], [505, 655, 6], [595, 640, 6], [550, 690, 5], [355, 735, 5], [470, 845, 6],
+];
+const MAP_PATHS = [
+  { d: "M372,0 Q395,55 440,95 L610,420 Q700,600 790,770 L875,960", w: 9 },
+  { d: "M215,1003 Q330,930 430,905 Q600,850 875,725", w: 6 },
+  { d: "M255,95 L258,950", w: 4 },
+];
+const MAP_BUILDINGS = [[95, 15, 70, 45, 0], [135, 105, 60, 45, 20], [30, 160, 55, 40, 0], [150, 220, 55, 45, 0], [55, 260, 55, 45, 0], [125, 340, 60, 50, 0], [10, 330, 80, 100, -30], [135, 480, 60, 45, 0], [10, 520, 70, 55, 0], [130, 600, 60, 45, 0], [80, 710, 55, 40, 0], [135, 760, 60, 45, 0], [10, 830, 50, 80, 0], [120, 890, 70, 35, 10], [430, 920, 26, 20, 0]];
+
+function holeShape(i) {
+  const { tee: [tx, ty], pin: [px, py], w } = LOOP[i];
+  const cx = (tx + px) / 2, cy = (ty + py) / 2, len = Math.hypot(px - tx, py - ty);
+  const ang = Math.atan2(py - ty, px - tx) * 180 / Math.PI;
+  return { cx, cy, len, ang, w };
+}
+
+(function drawMap() {
+  const sel = () => courseHole;
+  let s = `<svg viewBox="196 60 500 900" id="mapsvg" role="img" aria-label="Map of the six holes at Golfparken, played as a loop">`;
+  s += `<defs><pattern id="mowstripes" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><rect width="9" height="18" fill="rgba(255,255,255,0.06)"/></pattern></defs>`;
+  s += `<rect x="0" y="0" width="875" height="1003" fill="var(--c-rough)"/>`;
+  s += `<rect x="0" y="0" width="236" height="1003" fill="var(--c-town)"/>`;
+  MAP_BUILDINGS.forEach(([x, y, w, h, r]) => s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="var(--c-building)" transform="rotate(${r} ${x + w / 2} ${y + h / 2})"/>`);
+  MAP_PATHS.forEach(p => s += `<path d="${p.d}" fill="none" stroke="var(--c-path)" stroke-width="${p.w}" stroke-linecap="round"/>`);
+  // Fairways first, so trees sit over their edges
+  LOOP.forEach((h, i) => {
+    const f = holeShape(i);
+    s += `<ellipse cx="${f.cx}" cy="${f.cy}" rx="${f.len / 2 + 22}" ry="${f.w / 2}" transform="rotate(${f.ang} ${f.cx} ${f.cy})" fill="var(--c-fairway)"/>`;
+    s += `<ellipse cx="${f.cx}" cy="${f.cy}" rx="${f.len / 2 + 22}" ry="${f.w / 2}" transform="rotate(${f.ang} ${f.cx} ${f.cy})" fill="url(#mowstripes)"/>`;
+  });
+  s += `<g fill="var(--c-shadow)">${MAP_TREES.map(([x, y, r]) => `<circle cx="${x + r * 0.2}" cy="${y + r * 0.15}" r="${r}"/>`).join("")}</g>`;
+  s += `<g fill="var(--c-tree)">${MAP_TREES.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>`;
+  // Walking route between holes
+  LOOP.forEach((h, i) => {
+    const n = LOOP[(i + 1) % LOOP.length];
+    s += `<line x1="${h.pin[0]}" y1="${h.pin[1]}" x2="${n.tee[0]}" y2="${n.tee[1]}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" opacity="0.5"/>`;
+  });
+  // Each hole: a clickable group with greens, bunkers, line of play, tee badge and flag
+  LOOP.forEach((h, i) => {
+    const [tx, ty] = h.tee, [px, py] = h.pin;
+    s += `<g class="maphole" data-hole="${i}" tabindex="-1">`;
+    const f = holeShape(i);
+    s += `<ellipse class="mh-hit" cx="${f.cx}" cy="${f.cy}" rx="${f.len / 2 + 26}" ry="${f.w / 2 + 6}" transform="rotate(${f.ang} ${f.cx} ${f.cy})"/>`;
+    h.bunkers.forEach(([cx, cy, rx, ry]) => s += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--c-sand)"/>`);
+    s += `<circle cx="${px}" cy="${py}" r="15" fill="var(--c-green)" stroke="var(--c-fairway)" stroke-width="3"/>`;
+    s += `<line class="mh-lop" x1="${tx}" y1="${ty}" x2="${px}" y2="${py}" stroke="#fff" stroke-width="2.5" stroke-dasharray="2 7" stroke-linecap="round"/>`;
+    s += `<line x1="${px}" y1="${py}" x2="${px}" y2="${py - 26}" stroke="#fff" stroke-width="2.5"/><path d="M${px} ${py - 26} l16 5 l-16 5z" fill="var(--flag)"/>`;
+    s += `<circle class="mh-badge" cx="${tx}" cy="${ty}" r="15" stroke="var(--ink)" stroke-width="2"/><text x="${tx}" y="${ty + 5.5}" text-anchor="middle" class="mh-num">${i + 1}</text>`;
+    s += `</g>`;
+  });
+  // North arrow and a 50 m scale bar (about 2 px per metre)
+  s += `<g transform="translate(660 100)"><path d="M0 -22 L9 8 L0 2 L-9 8 Z" fill="var(--ink)"/><text y="26" text-anchor="middle" class="mh-small">N</text></g>`;
+  s += `<g transform="translate(560 940)"><rect width="100" height="6" fill="var(--ink)"/><rect width="50" height="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/><text x="50" y="-6" text-anchor="middle" class="mh-small">50 m</text></g>`;
+  s += `</svg>`;
+  el("coursemap").innerHTML = s;
+
+  const svg = el("mapsvg");
+  svg.addEventListener("click", e => { const g = e.target.closest(".maphole"); if (g) showHole(+g.dataset.hole); });
+  svg.addEventListener("pointermove", e => {
+    const g = e.target.closest(".maphole"); if (!g) return hideTip();
+    const i = +g.dataset.hole, st = focus ? holeStats(i, focus) : null;
+    showTip(`Hole ${i + 1} · ${COURSE[i].dist} m<br>Group avg <b>${fmt(holeAvg[i])}</b>${st ? `<br>${focus} avg <b>${fmt(st.avg)}</b>` : ""}`, e);
+  });
+  svg.addEventListener("pointerleave", hideTip);
+})();
+
+// Badges are tinted by difficulty: the group's average, or the followed player's when one is picked
+function paintMap() {
+  const svg = el("mapsvg"); if (!svg) return;
+  svg.querySelectorAll(".maphole").forEach(g => {
+    const i = +g.dataset.hole, st = focus ? holeStats(i, focus) : null;
+    const a = st ? st.avg : holeAvg[i];
+    g.querySelector(".mh-badge").setAttribute("fill", `var(--heat-${HEAT_STEPS(a)})`);
+    g.classList.toggle("on", i === courseHole);
+  });
+}
+paintMap();
 
 // Follow-a-player chips, summary and the shareable ?player= link
 el("chips").innerHTML = players.map(x => `<button type="button" class="chip" aria-pressed="false" data-chip="${x.p}" style="--ring:${colorOf(x.p)}">${avatarHTML(x.p)}${x.p}</button>`).join("");
