@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golfparken Aalborg Sessions</title>
+<meta name="description" content="Scores, races and player stats from six sessions on the six-hole loop at Golfparken Aalborg.">
+<meta property="og:title" content="Golfparken Aalborg Sessions">
+<meta property="og:description" content="Scores, races and player stats from six sessions on the six-hole loop at Golfparken Aalborg.">
+<meta name="theme-color" content="#2f6b4a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M9 4v24' stroke='%231d2620' stroke-width='2.5'/%3E%3Cpath d='M10 4l14 5-14 5z' fill='%23b8432f'/%3E%3Cellipse cx='16' cy='28' rx='11' ry='3' fill='%232f6b4a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single scorecard-like column; summary first, then trend, holes, and each session's card. */
+:root {
+  --bg: #f6f7f3;
+  --paper: #ffffff;
+  --ink: #1d2620;
+  --muted: #5d6a61;
+  --rule: #d9ded6;
+  --accent: #2f6b4a;       /* fairway */
+  --flag: #b8432f;         /* pin flag */
+  --heat-0: #e8f1ea; --heat-1: #f3ecd2; --heat-2: #f2d8b8; --heat-3: #eab9a3; --heat-4: #d98e7d;
+  --heat-ink: #1d2620;
+  --p1: #2f6b4a; --p2: #3b6fb6; --p3: #c27a12; --p4: #9b4aa8; --p5: #b8432f; --p6: #4f8f9b;
+  --d3: #2f6b4a; --d4: #6f9e6a; --d5: #a9c07d; --d6: #e0cf86; --d7: #e9ab6c; --d8: #d9805e; --d9: #b8432f;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121814; --paper: #1a221d; --ink: #e5ebe6; --muted: #9aa89f; --rule: #2e3a32;
+  --accent: #6fbf8e; --flag: #e57a63;
+  --heat-0: #1f3a2a; --heat-1: #3a3820; --heat-2: #4a3622; --heat-3: #5a2f26; --heat-4: #74302a;
+  --heat-ink: #e5ebe6;
+  --p1: #6fbf8e; --p2: #7aa7e8; --p3: #e0a347; --p4: #c78bd3; --p5: #e57a63; --p6: #7cc3cf;
+  --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #121814; --paper: #1a221d; --ink: #e5ebe6; --muted: #9aa89f; --rule: #2e3a32;
+  --accent: #6fbf8e; --flag: #e57a63;
+  --heat-0: #1f3a2a; --heat-1: #3a3820; --heat-2: #4a3622; --heat-3: #5a2f26; --heat-4: #74302a;
+  --heat-ink: #e5ebe6;
+  --p1: #6fbf8e; --p2: #7aa7e8; --p3: #e0a347; --p4: #c78bd3; --p5: #e57a63; --p6: #7cc3cf;
+  --d3: #6fbf8e; --d4: #8fb57a; --d5: #b3b469; --d6: #cfa65a; --d7: #d98b55; --d8: #dc6f55; --d9: #e0574b;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); font-stretch: 80%; text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+section { display: grid; gap: 18px; min-width: 0; }
+header { display: grid; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 24px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.stat { padding: 16px 18px; display: grid; gap: 4px; border-left: 1px solid var(--rule); }
+.stat:first-child { border-left: 0; padding-left: 0; }
+.stat .v { font-family: var(--display); font-stretch: 75%; font-size: 2.4rem; font-weight: 800; line-height: 1; }
+.stat .l { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.stat .s { font-size: 0.9rem; color: var(--muted); }
+@media (max-width: 720px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+
+.scroll { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { padding: 8px 10px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-family: var(--mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--ink); }
+tbody td { border-bottom: 1px solid var(--rule); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+tbody td:first-child { font-family: var(--body); font-weight: 600; }
+tr.par td { color: var(--muted); font-style: italic; border-bottom: 1px solid var(--ink); }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 0; }
+.spark { display: block; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); }
+
+.chart-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.9rem; }
+.legend button { font: inherit; color: var(--ink); background: none; border: 0; padding: 2px 0; cursor: pointer; display: inline-flex; align-items: center; }
+.legend button[aria-pressed="false"] { opacity: 0.35; }
+.legend button:focus-visible, .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+svg text { fill: var(--muted); font-family: var(--mono); font-size: 12.5px; }
+/* Charts keep a readable minimum width and scroll sideways inside their card on phones */
+.chart-card { overflow-x: auto; }
+.chart-card svg { min-width: 640px; }
+td.loss { color: var(--flag); }
+section[id] { scroll-margin-top: 64px; }
+.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--rule); display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.toc::-webkit-scrollbar { display: none; }
+.toc a { flex: none; font-family: var(--mono); font-size: 0.78rem; padding: 4px 11px; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink); background: var(--paper); text-decoration: none; }
+.toc a:hover { border-color: var(--accent); color: var(--accent); }
+.toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.note-group { display: grid; gap: 14px; }
+.note-group + .note-group { margin-top: 18px; }
+.group-title { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+.notes h4 { font-family: var(--display); font-stretch: 80%; font-size: 1.15rem; font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font-family: var(--mono); font-size: 0.85rem; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+td.h { text-align: center; color: var(--heat-ink); min-width: 2.4em; }
+th.h { text-align: center; }
+td.win { color: var(--accent); }
+.key { display: flex; flex-wrap: wrap; gap: 4px 14px; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); align-items: center; }
+.key span i { display: inline-block; width: 14px; height: 14px; vertical-align: -3px; margin-right: 5px; border-radius: 2px; }
+
+.notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 32px; }
+.notes > div { display: grid; gap: 6px; align-content: start; }
+@media (max-width: 720px) { .notes { grid-template-columns: 1fr; } }
+.bars { display: grid; gap: 8px; margin-top: 14px; }
+.bar-row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 12px; align-items: center; font-size: 0.9rem; }
+.bar-row .who { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-row .who small { font-family: var(--mono); color: var(--muted); }
+.bar { display: flex; height: 22px; font-family: var(--mono); font-size: 0.75rem; }
+.bar span { display: flex; align-items: center; padding-inline: 6px; color: var(--bg); overflow: hidden; white-space: nowrap; }
+.bar .g { background: var(--muted); border-radius: 3px 0 0 3px; }
+.bar .pt { background: var(--accent); border-radius: 0 3px 3px 0; }
+.bar-gap { height: 4px; }
+.dist-row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) 5.5em; gap: 12px; align-items: center; font-size: 0.9rem; }
+.dist-row .bar span { padding: 0; }
+.dist-row .bar span:first-child { border-radius: 3px 0 0 3px; }
+.dist-row .bar span:last-child { border-radius: 0 3px 3px 0; }
+.dist-row .tail { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); text-align: right; }
+td.hm { text-align: center; color: var(--heat-ink); min-width: 3em; }
+td.hm.best { box-shadow: inset 0 0 0 2px var(--accent); font-weight: 600; }
+td.hm.worst { box-shadow: inset 0 0 0 2px var(--flag); font-weight: 600; }
+tr.group td { border-top: 1px solid var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.pcard { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.pcard .phead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.pcard h3 { font-size: 1.3rem; }
+.pcard .phead { align-items: center; }
+.pid { display: flex; align-items: center; gap: 12px; min-width: 0; }
+/* Source images are screenshots with a status badge in the lower right; zoom into the face to crop it out */
+.avatar { flex: none; width: 60px; height: 60px; border-radius: 50%; background-size: 180% auto; background-position: 50% 42%; background-repeat: no-repeat; background-color: var(--rule); box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ring); }
+.pcard .big { font-family: var(--display); font-stretch: 75%; font-size: 2rem; font-weight: 800; line-height: 1; }
+.pcard dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 0.9rem; }
+.pcard dt { color: var(--muted); }
+.pcard dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+.legend-static { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.9rem; }
+td.h small { display: block; font-size: 0.7rem; opacity: 0.7; line-height: 1; }
+footer { font-size: 0.9rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 18px; display: grid; gap: 8px; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+* { box-sizing: border-box; }
+
+/* Player focus: chips in the header pick one player; everything else fades back */
+.focus { display: grid; gap: 10px; }
+.focus-label { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: inherit; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; border-radius: 999px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+.chip:hover { border-color: var(--ring); }
+.chip[aria-pressed="true"] { border-color: var(--ring); box-shadow: inset 0 0 0 1px var(--ring); font-weight: 600; }
+.chip:focus-visible, .toc button:focus-visible, .rc button:focus-visible, .rc input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chip .avatar { width: 30px; height: 30px; box-shadow: none; }
+.focus-summary { font-size: 0.95rem; min-height: 1.55em; }
+.toc .following { flex: none; font-family: var(--mono); font-size: 0.78rem; padding: 4px 11px; border-radius: 999px; border: 1px solid var(--ring); color: var(--ink); background: var(--paper); cursor: pointer; }
+.toc .following[hidden] { display: none; }
+[data-player], [data-hl] { transition: opacity 0.25s ease; }
+.dim { opacity: 0.16; }
+tr.dim, .dist-row.dim, .bar-row.dim, .pcard.dim, .lb-row.dim { opacity: 0.38; }
+tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%, transparent); }
+.pcard.hl { border-color: var(--ring); box-shadow: 0 0 0 1px var(--ring); }
+.pcard { cursor: pointer; }
+#board tbody tr { cursor: pointer; }
+
+/* Hole-by-hole race */
+.race-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.race-stage { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 2rem; line-height: 1; }
+.race-stage small { display: block; font-family: var(--mono); font-stretch: 100%; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.rc { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rc button { font-family: var(--mono); font-size: 0.85rem; min-width: 40px; height: 36px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+.rc button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); min-width: 84px; }
+.rc input[type="range"] { width: 160px; accent-color: var(--accent); }
+.track { --rowh: 52px; --lw: 8.5em; --room: 150px; position: relative; margin-top: 26px; }
+.track-axis { position: absolute; inset: 0 0 0 calc(var(--lw) + 22px); pointer-events: none; }
+.par-line { position: absolute; top: -18px; bottom: 0; width: 0; left: calc(var(--f, 0) * (100% - var(--room))); border-left: 1.5px dashed var(--ink); transition: left 0.7s cubic-bezier(.3,.7,.2,1); }
+.par-line span { position: absolute; top: 0; left: 6px; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+.lb-row { position: absolute; top: 0; left: 0; right: 0; height: var(--rowh); transform: translateY(calc(var(--i) * var(--rowh))); cursor: pointer; display: grid; grid-template-columns: var(--lw) minmax(0, 1fr); align-items: center; transition: transform 0.7s cubic-bezier(.3,.7,.2,1), opacity 0.25s ease; }
+.lb-name { display: flex; align-items: baseline; gap: 8px; padding-right: 10px; white-space: nowrap; overflow: hidden; }
+.lb-rank { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); width: 2.2em; flex: none; }
+.lb-name b { font-family: var(--display); font-stretch: 85%; font-size: 1.05rem; overflow: hidden; text-overflow: ellipsis; }
+.lb-lane { position: relative; height: 100%; margin-left: 22px; }
+.lb-bar { position: absolute; left: 0; top: 50%; height: 14px; margin-top: -7px; border-radius: 0 7px 7px 0; width: calc(var(--f) * (100% - var(--room))); background: var(--ring); opacity: 0.85; transition: width 0.7s cubic-bezier(.3,.7,.2,1); }
+.lb-av { position: absolute; top: 50%; left: calc(var(--f) * (100% - var(--room))); width: 42px; height: 42px; margin: -21px 0 0 -21px; transition: left 0.7s cubic-bezier(.3,.7,.2,1); }
+.lb-av .avatar { display: block; width: 42px; height: 42px; box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ring); }
+.lb-av .initial { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--ring); color: var(--paper); font-family: var(--display); font-weight: 800; }
+.lb-num { position: absolute; top: 50%; left: calc(var(--f) * (100% - var(--room))); transform: translateY(-50%); margin-left: 30px; font-family: var(--mono); font-size: 0.85rem; white-space: nowrap; transition: left 0.7s cubic-bezier(.3,.7,.2,1); }
+.lb-num strong { color: var(--ink); font-size: 1rem; }
+.lb-num .gap { color: var(--muted); }
+.lb-num .shot { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 3px; font-size: 0.75rem; color: var(--heat-ink); }
+.lb-num .shot.pop { animation: pop 0.6s ease; }
+@keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+.lb-lead .lb-bar { opacity: 1; }
+.race-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+@media (max-width: 720px) {
+  .track { --rowh: 46px; --lw: 4.4em; --room: 78px; }
+  .lb-rank { display: none; }
+  .lb-name b { font-size: 0.95rem; }
+  .lb-av, .lb-av .avatar, .lb-av .initial { width: 34px; height: 34px; }
+  .lb-av { margin: -17px 0 0 -17px; }
+  .lb-num { margin-left: 22px; font-size: 0.78rem; }
+  .lb-num .shot { display: none; }
+  .race-stage { font-size: 1.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb-row, .lb-bar, .lb-av, .lb-num, .par-line, [data-player] { transition: none; }
+  .lb-num .shot.pop { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Session report</span>
+    <h1>Golfparken Aalborg Sessions</h1>
+    <p>Six sessions on a six-hole loop, played by a rotating group of six. Lower is better throughout. Par is 3 per hole, 18 for the loop, and every hole is capped at 9 (triple par). Session 1 was played before the cap, so its scores are capped here to match. The latest session was played on 18 October 2026.</p>
+    <div class="meta" id="meta"></div>
+    <div class="focus">
+      <span class="focus-label" id="focuslabel">Follow a player</span>
+      <div class="chips" id="chips" role="group" aria-labelledby="focuslabel"></div>
+      <p class="focus-summary muted" id="focussummary" aria-live="polite">Pick a name to pick them out in every chart and table below.</p>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#holes">Holes</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Profiles</a><a href="#observations">Observations</a></nav>
+
+  <section>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section id="leaderboard">
+    <span class="eyebrow">Leaderboard</span>
+    <h2>Players by average score</h2>
+    <div class="scroll"><table id="board"></table></div>
+    <p class="muted" style="font-size:0.9rem">Wins count the lowest total in a session. Trend shows every round in session order. Click a row to follow that player.</p>
+  </section>
+
+  <section id="replay">
+    <span class="eyebrow">Hole race</span>
+    <h2>How each session unfolded</h2>
+    <p>Play a session back one hole at a time. Bars grow with each player's running total and the order changes as the lead does. The dashed line is par so far.</p>
+    <div class="tabs" role="tablist" id="rtabs"></div>
+    <div class="chart-card">
+      <div class="race-head">
+        <div class="race-stage" id="stage" aria-live="polite"></div>
+        <div class="rc">
+          <button type="button" id="rback" aria-label="Previous hole">‹</button>
+          <button type="button" class="primary" id="rplay">Play</button>
+          <button type="button" id="rnext" aria-label="Next hole">›</button>
+          <input type="range" id="rslider" min="0" max="6" step="1" value="6" aria-label="Hole">
+        </div>
+      </div>
+      <div class="track" id="track"></div>
+      <div class="race-foot"><span>Running strokes, lower is better</span><span id="racenote"></span></div>
+    </div>
+    <div class="chart-card">
+      <p class="muted" style="font-size:0.9rem;margin-bottom:8px">Strokes behind the leader after each hole. The line at the top is whoever was leading at that point.</p>
+      <div id="replaychart"></div>
+    </div>
+  </section>
+
+  <section id="race">
+    <span class="eyebrow">Season race</span>
+    <h2>Strokes gained on the field</h2>
+    <p>After each session, how many strokes a player has gained (above zero) or lost (below zero) against that session's average, added up over the season. A missed session adds nothing, so the line stays flat and dashed until the player's next round. A runaway winner pulls the session average down, which is why most lines sit below zero.</p>
+    <div class="chart-card">
+      <div class="legend-static" id="racelegend"></div>
+      <div id="racechart"></div>
+    </div>
+  </section>
+
+  <section id="head-to-head">
+    <span class="eyebrow">Head to head</span>
+    <h2>Who beats whom</h2>
+    <p>Wins, losses and ties for the row player against the column player, in the sessions both played.</p>
+    <div class="scroll"><table id="h2h"></table></div>
+  </section>
+
+  <section id="trend">
+    <span class="eyebrow">Trend</span>
+    <h2>Total strokes by session</h2>
+    <div class="chart-card">
+      <div class="legend" id="legend"></div>
+      <div id="trendchart"></div>
+      <p class="muted" style="font-size:0.85rem">A dashed line skips sessions the player missed. Click a name to hide or show that player.</p>
+    </div>
+  </section>
+
+  <section id="holes">
+    <span class="eyebrow">Holes</span>
+    <h2>Where the strokes go</h2>
+    <p>Average strokes on each hole across all rounds, against par 3. SI is the club's stroke index, where 1 is the hole the course rates hardest.</p>
+    <div class="chart-card"><div id="holechart"></div></div>
+  </section>
+
+  <section id="player-by-hole">
+    <span class="eyebrow">Player by hole</span>
+    <h2>Each player's average on each hole</h2>
+    <p>Green outline marks a player's best hole, red outline their worst.</p>
+    <div class="scroll"><table id="heatmap"></table></div>
+  </section>
+
+  <section id="stroke-index">
+    <span class="eyebrow">Stroke index</span>
+    <h2>The club's ranking against yours</h2>
+    <p>Left: holes ordered by the club's stroke index, hardest at the top. Right: holes ordered by this group's average. Red lines are holes that play harder for you than the club rates them, green lines play easier.</p>
+    <div class="chart-card"><div id="slope"></div></div>
+  </section>
+
+  <section id="score-mix">
+    <span class="eyebrow">Score mix</span>
+    <h2>How each player's holes end</h2>
+    <p>Share of holes finished in each number of strokes. The right column shows how often a player takes the maximum 9.</p>
+    <div class="chart-card">
+      <div class="legend-static" id="distlegend"></div>
+      <div class="bars" id="dist"></div>
+    </div>
+  </section>
+
+  <section id="putting">
+    <span class="eyebrow">Putting</span>
+    <h2>Putts, sessions 2, 3 and 6</h2>
+    <p>Putts were only counted in sessions 2, 3 and 6, so this covers 11 rounds. Two putts per hole gives a baseline of 12 per round. Each bar splits a round into putts and the strokes it took to reach the green.</p>
+    <div class="scroll"><table id="putttable"></table></div>
+    <div class="chart-card">
+      <div class="key"><span><i style="background:var(--muted)"></i>Strokes to the green</span><span><i style="background:var(--accent)"></i>Putts</span></div>
+      <div class="bars" id="puttbars"></div>
+    </div>
+  </section>
+
+  <section id="scorecards">
+    <span class="eyebrow">Scorecards</span>
+    <h2>Session by session</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="scroll"><table id="card"></table></div>
+    <div class="key" id="key"></div>
+  </section>
+
+  <section id="profiles">
+    <span class="eyebrow">Players</span>
+    <h2>Player profiles</h2>
+    <div class="cards" id="profilecards"></div>
+  </section>
+
+  <section id="observations">
+    <span class="eyebrow">Observations</span>
+    <h2>What stands out</h2>
+    <div class="note-group">
+      <h3 class="group-title">Results</h3>
+      <div class="notes">
+        <div><h4>Laurits has won four in a row</h4><p>Laurits has won every session from 3 to 6 and has the best average by far at 37.0, seven strokes ahead of the next player. They won session 6 with 38 despite 18 putts, the most in any counted round. Their 35 in session 5 holds the only two pars in the data.</p></div>
+        <div><h4>Laurits is unbeaten except once</h4><p>Laurits is 4-0 with a tie against Lukas, 3-0 with a tie against Mikkel and 4-1 against Daniel. The only loss is to Daniel in session 1. Behind Laurits it is tight: Lukas leads Daniel 3-2 with a tie and Mikkel 3-1 with a tie, while Daniel and Mikkel are level at 2-2 with a tie.</p></div>
+        <div><h4>Second place is a three-way race</h4><p>Lukas (44.0), Daniel (44.5) and Mikkel (44.6) are separated by 0.6 strokes on average. One good round from any of them changes the order.</p></div>
+        <div><h4>Most sessions are not close</h4><p>Only session 1 (Daniel by 3) and session 4 (Laurits by 2) were decided by fewer than 8 strokes. The other four winners won by 8 to 15.</p></div>
+        <div><h4>Scores have crept up since session 3</h4><p>The field averaged 43.3, 40.5 and 38.8 in the first three sessions, then 43.8, 44.8 and 45.0. Sessions 2 and 3 were helped by the single low rounds from Tobias (28) and Laurits (29).</p></div>
+        <div><h4>Session 6 at a glance</h4><p>Three players on 18 October: Laurits 38, Daniel 46 and Lukas 51. Laurits won despite the most putts, because they reached the green in 20 strokes against 32 for Daniel and 36 for Lukas.</p></div>
+      </div>
+    </div>
+    <div class="note-group">
+      <h3 class="group-title">Players</h3>
+      <div class="notes">
+        <div><h4>Lukas and Daniel have played every session</h4><p>Both were at all six. Lukas has scored 43 or 44 in four of them, with a best of 38 in session 3 and 51 in session 6. Daniel ranges from 41 to 48, and the 41 won session 1 once it was capped.</p></div>
+        <div><h4>Daniel and Mikkel are the steadiest</h4><p>Daniel's totals vary least (spread of 2.1 strokes), with Mikkel close behind (2.2). Lukas is at 3.8, mostly because of the 51 in session 6. Laurits varies most (4.9) because of 44 in session 1, and has not scored above 39 since.</p></div>
+        <div><h4>Each player's best hole</h4><p>Hole 5 suits Laurits best at 4.6, the lowest any regular averages on a hole. Daniel is best on hole 3 (5.7). Mikkel's best hole is hole 2 (6.2), and Lukas's is hole 4 (6.8).</p></div>
+        <div><h4>Daniel and Mikkel fade on holes 4 to 6</h4><p>Daniel averages 21.2 on holes 1 to 3 and 23.3 on holes 4 to 6; Mikkel goes from 21.4 to 23.2. Laurits gets better, from 19.0 to 18.0. Mikkel has taken the maximum 9 on hole 4 in all five rounds, and Daniel has taken 9 on hole 6 in five of six.</p></div>
+      </div>
+    </div>
+    <div class="note-group">
+      <h3 class="group-title">Holes</h3>
+      <div class="notes">
+        <div><h4>Holes 6 and 1 are the hardest</h4><p>Hole 6 (7.9) and hole 1 (7.8) are almost level as the hardest holes. Hole 5 is the easiest at 6.2. About one hole in three ends on the maximum of 9 (49 of 150).</p></div>
+        <div><h4>The course rating does not match this group</h4><p>The club rates hole 2 hardest (SI 1) and hole 4 easiest (SI 17). For this group, hole 2 is only the fourth hardest at 6.8, while hole 4 is third at 7.6.</p></div>
+      </div>
+    </div>
+    <div class="note-group">
+      <h3 class="group-title">Putting</h3>
+      <div class="notes">
+        <div><h4>Putting is not where rounds are won</h4><p>Putts ranged from 11 to 18 per round, while totals ranged from 28 to 51 in the same sessions. Laurits (29) and Tobias (28) reached the green in 17 and 15 strokes, and that is where their low rounds came from. Lukas's 38 in session 3 had 11 putts, the fewest recorded.</p></div>
+        <div><h4>Multi-putts in session 6</h4><p>Session 6 had 8 holes with three or more putts, including a five-putt each for Lukas (hole 3) and Laurits (hole 2). Over all counted rounds, Daniel has the most three-putts or worse with 8. No one has yet reached a green in one; Laurits has done it in two on five holes.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Source: golf_sessions_data.csv for sessions 1 to 5, and the app scorecards for session 6; 25 rounds in total. Putts were counted in sessions 2, 3 and 6. The file has putt rows for session 1, but they are not real counts and are left out. Six session 1 hole scores above 9 (10 to 15) are capped at 9, which lowers that session's totals: Lukas 49 to 44, Daniel 47 to 41, Laurits 51 to 44 and Mikkel 46 to 44. Only session 6 has a date, so sessions are shown in numeric order. <span id="check"></span> Tobias played once, so their single round is shown but not ranked with the regulars.</p>
+  </footer>
+</div>
+
+<script>
+const CSV = `Session,Course,Player,Metric,Hole_1,Hole_2,Hole_3,Hole_4,Hole_5,Hole_6,Total,To_Par
+1,Golfparken Aalborg,Lukas,Strokes,14,4,6,8,8,9,49,31.0
+1,Golfparken Aalborg,Daniel,Strokes,7,7,5,9,4,15,47,29.0
+1,Golfparken Aalborg,Laurits,Strokes,10,7,7,7,5,15,51,33.0
+1,Golfparken Aalborg,Mikkel,Strokes,8,7,5,10,6,10,46,28.0
+2,Golfparken Aalborg,Lukas,Strokes,6,8,7,7,6,9,43,25.0
+2,Golfparken Aalborg,Daniel,Strokes,6,8,7,9,6,8,44,26.0
+2,Golfparken Aalborg,Mikkel,Strokes,8,5,8,9,9,8,47,29.0
+2,Golfparken Aalborg,Tobias,Strokes,7,5,4,4,4,4,28,10.0
+3,Golfparken Aalborg,Lukas,Strokes,8,7,7,4,5,7,38,20.0
+3,Golfparken Aalborg,Mikkel,Strokes,6,8,6,9,9,6,44,26.0
+3,Golfparken Aalborg,Daniel,Strokes,9,5,9,6,6,9,44,26.0
+3,Golfparken Aalborg,Laurits,Strokes,4,5,4,5,5,6,29,11.0
+4,Golfparken Aalborg,Lukas,Strokes,5,8,7,7,8,9,44,26.0
+4,Golfparken Aalborg,Laurits,Strokes,8,6,7,7,5,6,39,21.0
+4,Golfparken Aalborg,Mikkel,Strokes,8,5,9,9,4,6,41,23.0
+4,Golfparken Aalborg,Daniel,Strokes,8,9,4,9,5,9,44,26.0
+4,Golfparken Aalborg,Oskar,Strokes,9,7,8,9,9,9,51,33.0
+5,Golfparken Aalborg,Lukas,Strokes,9,6,7,6,7,9,44,26.0
+5,Golfparken Aalborg,Laurits,Strokes,9,3,5,7,3,8,35,17.0
+5,Golfparken Aalborg,Mikkel,Strokes,9,6,9,9,5,9,47,29.0
+5,Golfparken Aalborg,Daniel,Strokes,8,9,4,9,9,9,48,30.0
+5,Golfparken Aalborg,Oskar,Strokes,9,9,9,8,6,9,50,32.0
+6,Golfparken Aalborg,Lukas,Strokes,8,9,9,9,8,8,51,33.0
+6,Golfparken Aalborg,Daniel,Strokes,9,8,5,6,9,9,46,28.0
+6,Golfparken Aalborg,Laurits,Strokes,9,8,4,8,5,4,38,20.0
+6,Golfparken Aalborg,Lukas,Putts,2,2,5,3,2,1,15,
+6,Golfparken Aalborg,Daniel,Putts,3,3,2,2,2,2,14,
+6,Golfparken Aalborg,Laurits,Putts,3,5,2,3,3,2,18,
+1,Golfparken Aalborg,Lukas,Putts,5,2,2,2,2,2,15,
+1,Golfparken Aalborg,Daniel,Putts,2,2,2,2,2,2,12,
+1,Golfparken Aalborg,Laurits,Putts,2,2,2,2,2,2,12,
+1,Golfparken Aalborg,Mikkel,Putts,3,2,2,2,2,2,13,
+2,Golfparken Aalborg,Lukas,Putts,2,4,2,2,2,3,15,
+2,Golfparken Aalborg,Daniel,Putts,2,3,3,2,3,2,15,
+2,Golfparken Aalborg,Mikkel,Putts,3,2,4,2,2,2,15,
+2,Golfparken Aalborg,Tobias,Putts,3,2,2,2,2,2,13,
+3,Golfparken Aalborg,Lukas,Putts,2,2,2,1,2,2,11,
+3,Golfparken Aalborg,Mikkel,Putts,3,2,3,3,2,2,15,
+3,Golfparken Aalborg,Daniel,Putts,3,2,3,2,4,2,16,
+3,Golfparken Aalborg,Laurits,Putts,2,2,2,2,2,2,12,`;
+
+const PAR = 3, HOLES = 6, COURSE_PAR = PAR * HOLES;
+// Stroke index (hardest = 1) from the club's scorecard
+const STROKE_INDEX = [13, 1, 9, 17, 11, 5];
+// Putts were counted in sessions 2, 3 and 6; the session 1 putt rows in the file are not real counts.
+const PUTT_SESSIONS = [2, 3, 6];
+const parsed = CSV.trim().split("\n").slice(1).map(l => {
+  const c = l.split(",");
+  return { s: +c[0], course: c[1], p: c[2], metric: c[3], h: c.slice(4, 10).map(Number), total: +c[10] };
+});
+// The group plays to a maximum of 9 per hole (triple par); session 1 predates that rule, so it is capped here.
+const MAX_SCORE = 9;
+const rows = parsed.filter(r => r.metric === "Strokes").map(r => {
+  const h = r.h.map(v => Math.min(v, MAX_SCORE));
+  return { ...r, raw: r.h, rawTotal: r.total, h, total: h.reduce((a, b) => a + b, 0) };
+});
+const puttRows = parsed.filter(r => r.metric === "Putts" && PUTT_SESSIONS.includes(r.s));
+const puttsOf = (s, p) => puttRows.find(r => r.s === s && r.p === p);
+const sessions = [...new Set(rows.map(r => r.s))].sort((a, b) => a - b);
+const playerOrder = ["Lukas", "Laurits", "Mikkel", "Daniel", "Oskar", "Tobias"];
+const colorOf = p => `var(--p${playerOrder.indexOf(p) + 1})`;
+const fmt = n => (Math.round(n * 10) / 10).toFixed(1);
+const toPar = n => (n > 0 ? "+" : "") + n;
+const el = id => document.getElementById(id);
+
+// Player avatars, served next to the page
+const AVATARS = Object.fromEntries(playerOrder.map(p => [p, `avatars/${p.toLowerCase()}.png`]));
+const avatarHTML = p => AVATARS[p] ? `<span class="avatar" role="img" aria-label="${p}" style="background-image:url(${AVATARS[p]})"></span>` : `<span class="initial">${p[0]}</span>`;
+
+// Player focus: elements tagged data-player fade unless they belong to the followed player;
+// data-hl elements (head-to-head cells) only get highlighted. Charts call applyFocus after each redraw.
+let focus = null;
+function applyFocus() {
+  document.querySelectorAll("[data-player]").forEach(n => {
+    const on = n.dataset.player === focus;
+    n.classList.toggle("dim", !!focus && !on);
+    n.classList.toggle("hl", !!focus && on);
+    // Raise the followed player's lines above the others
+    if (on && n.tagName === "g") n.parentNode.appendChild(n);
+  });
+  document.querySelectorAll("[data-hl]").forEach(n => n.classList.toggle("hl", !!focus && n.dataset.hl === focus));
+}
+
+// Winners per session
+const winners = {};
+sessions.forEach(s => {
+  const sr = rows.filter(r => r.s === s);
+  const min = Math.min(...sr.map(r => r.total));
+  winners[s] = sr.filter(r => r.total === min).map(r => r.p);
+});
+
+// Player summaries
+const players = playerOrder.map(p => {
+  const pr = rows.filter(r => r.p === p).sort((a, b) => a.s - b.s);
+  const totals = pr.map(r => r.total);
+  return {
+    p, rounds: pr.length, list: pr,
+    avg: totals.reduce((a, b) => a + b, 0) / pr.length,
+    best: Math.min(...totals), worst: Math.max(...totals),
+    wins: sessions.filter(s => winners[s].includes(p)).length,
+  };
+}).sort((a, b) => (a.rounds > 1) === (b.rounds > 1) ? a.avg - b.avg : (a.rounds > 1 ? -1 : 1));
+
+// Meta + stats
+const allTotals = rows.map(r => r.total);
+const fieldAvg = allTotals.reduce((a, b) => a + b, 0) / rows.length;
+const bestRow = rows.reduce((a, b) => (b.total < a.total ? b : a));
+const holeAvg = Array.from({ length: HOLES }, (_, i) => rows.reduce((a, r) => a + r.h[i], 0) / rows.length);
+const hardest = holeAvg.indexOf(Math.max(...holeAvg));
+const bad = [...rows.map(r => ({ h: r.raw, total: r.rawTotal })), ...puttRows].filter(r => r.h.reduce((a, b) => a + b, 0) !== r.total);
+el("check").textContent = bad.length ? `${bad.length} rows have hole scores that do not add up to their Total.` : "Hole scores add up to each row's Total in every round.";
+
+el("meta").innerHTML = [
+  `${rows[0].course}`, `${sessions.length} sessions`, `${rows.length} rounds`,
+  `${playerOrder.length} players`, `${HOLES} holes, par ${COURSE_PAR}`,
+].map(t => `<span>${t}</span>`).join("");
+
+el("stats").innerHTML = [
+  { v: fmt(fieldAvg), l: "Field average", s: `${toPar(+fmt(fieldAvg - COURSE_PAR))} to par` },
+  { v: bestRow.total, l: "Best round", s: `${bestRow.p}, session ${bestRow.s}` },
+  { v: `#${hardest + 1}`, l: "Hardest hole", s: `${fmt(holeAvg[hardest])} strokes on average` },
+  { v: fmt(players[0].avg), l: "Season leader", s: `${players[0].p}, ${players[0].wins} of ${players[0].rounds} sessions won` },
+].map(x => `<div class="stat"><span class="l">${x.l}</span><span class="v num">${x.v}</span><span class="s">${x.s}</span></div>`).join("");
+
+// Sparkline
+// Join a player's rounds: solid between back-to-back sessions, dashed across sessions they missed
+function joinRounds(list, x, y) {
+  let solid = "", dashed = "";
+  for (let i = 1; i < list.length; i++) {
+    const a = list[i - 1], b = list[i];
+    const seg = `M${x(a.s).toFixed(1)} ${y(a.total).toFixed(1)} L${x(b.s).toFixed(1)} ${y(b.total).toFixed(1)} `;
+    if (b.s === a.s + 1) solid += seg; else dashed += seg;
+  }
+  return { solid, dashed };
+}
+
+function spark(list) {
+  const w = 120, h = 28, lo = 25, hi = 55;
+  const x = s => 6 + (s - 1) * (w - 12) / (sessions.length - 1);
+  const y = v => 4 + (v - lo) * (h - 8) / (hi - lo);
+  const pts = list.map(r => [x(r.s), y(r.total)]);
+  const { solid, dashed } = joinRounds(list, x, y);
+  const last = pts[pts.length - 1];
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+    <line x1="0" x2="${w}" y1="${y(fieldAvg)}" y2="${y(fieldAvg)}" stroke="var(--rule)" stroke-dasharray="2 3"/>
+    ${solid ? `<path d="${solid}" fill="none" stroke="var(--muted)" stroke-width="1.5"/>` : ""}
+    ${dashed ? `<path d="${dashed}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 3"/>` : ""}
+    ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="2" fill="var(--muted)"/>`).join("")}
+    <circle cx="${last[0]}" cy="${last[1]}" r="3.2" fill="var(--accent)"/></svg>`;
+}
+
+el("board").innerHTML = `<thead><tr><th>Player</th><th>Rounds</th><th>Average</th><th>To par</th><th>Best</th><th>Worst</th><th>Wins</th><th style="text-align:left">Trend</th></tr></thead>
+<tbody>${players.map(x => `<tr data-player="${x.p}" data-toggle>
+  <td><span class="swatch" style="background:${colorOf(x.p)}"></span>${x.p}${x.rounds === 1 ? ' <span class="pill">1 round</span>' : ""}</td>
+  <td>${x.rounds}</td><td>${fmt(x.avg)}</td><td>${toPar(+fmt(x.avg - COURSE_PAR))}</td>
+  <td>${x.best}</td><td>${x.worst}</td><td>${x.wins}</td><td style="text-align:left">${spark(x.list)}</td></tr>`).join("")}</tbody>`;
+
+// Head to head
+(function drawH2H() {
+  const ps = players.filter(x => x.rounds > 1).map(x => x.p);
+  const cell = (a, b) => {
+    if (a === b) return `<td class="muted" data-hl="${b}">-</td>`;
+    let w = 0, l = 0, t = 0;
+    sessions.forEach(s => {
+      const A = rows.find(r => r.s === s && r.p === a), B = rows.find(r => r.s === s && r.p === b);
+      if (A && B) A.total < B.total ? w++ : A.total > B.total ? l++ : t++;
+    });
+    if (!w && !l && !t) return `<td class="muted" data-hl="${b}">no games</td>`;
+    const cls = w > l ? "win" : w < l ? "loss" : "";
+    return `<td class="${cls}" data-hl="${b}">${w}-${l}${t ? `-${t}` : ""}</td>`;
+  };
+  el("h2h").innerHTML = `<thead><tr><th></th>${ps.map(p => `<th data-hl="${p}">${p}</th>`).join("")}</tr></thead>
+  <tbody>${ps.map(a => `<tr data-hl="${a}"><td><span class="swatch" style="background:${colorOf(a)}"></span>${a}</td>${ps.map(b => cell(a, b)).join("")}</tr>`).join("")}</tbody>`;
+})();
+
+// Trend chart
+const hidden = new Set();
+function drawTrend() {
+  const W = 960, H = 340, m = { l: 48, r: 44, t: 16, b: 36 };
+  const lo = 25, hi = 55;
+  const x = s => m.l + (s - 1) * (W - m.l - m.r) / (sessions.length - 1);
+  const y = v => m.t + (v - lo) * (H - m.t - m.b) / (hi - lo);
+  let g = "";
+  for (let v = lo; v <= hi; v += 5) {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)"/>`;
+    g += `<text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  }
+  sessions.forEach(s => g += `<text x="${x(s)}" y="${H - 12}" text-anchor="middle">Session ${s}</text>`);
+  g += `<text x="${m.l + 4}" y="${m.t - 4}" text-anchor="start">strokes, lower is better</text>`;
+  playerOrder.filter(p => !hidden.has(p)).forEach(p => {
+    const pr = rows.filter(r => r.p === p).sort((a, b) => a.s - b.s);
+    const c = colorOf(p);
+    const { solid, dashed } = joinRounds(pr, x, y);
+    g += `<g data-player="${p}">`;
+    if (solid) g += `<path d="${solid}" fill="none" stroke="${c}" stroke-width="2.25"/>`;
+    if (dashed) g += `<path d="${dashed}" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="5 5" opacity="0.8"/>`;
+    pr.forEach(r => g += `<circle cx="${x(r.s)}" cy="${y(r.total)}" r="4.5" fill="${c}" stroke="var(--paper)" stroke-width="1.5"><title>${p}, session ${r.s}: ${r.total}</title></circle>`);
+    g += `</g>`;
+  });
+  el("trendchart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Total strokes per player by session">${g}</svg>`;
+  applyFocus();
+}
+el("legend").innerHTML = playerOrder.map(p => `<button type="button" aria-pressed="true" data-p="${p}"><span class="swatch" style="background:${colorOf(p)}"></span>${p}</button>`).join("");
+el("legend").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const p = b.dataset.p;
+  hidden.has(p) ? hidden.delete(p) : hidden.add(p);
+  b.setAttribute("aria-pressed", String(!hidden.has(p)));
+  drawTrend();
+});
+drawTrend();
+
+// Hole chart
+(function drawHoles() {
+  const W = 960, H = 260, m = { l: 44, r: 20, t: 20, b: 34 };
+  const max = 10;
+  const bw = (W - m.l - m.r) / HOLES;
+  const y = v => H - m.b - v * (H - m.t - m.b) / max;
+  let g = "";
+  for (let v = 0; v <= max; v += 2) {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)"/>`;
+    g += `<text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  }
+  holeAvg.forEach((a, i) => {
+    const x0 = m.l + i * bw + bw * 0.22, w = bw * 0.56;
+    const fill = i === hardest ? "var(--flag)" : "var(--accent)";
+    g += `<rect x="${x0}" y="${y(a)}" width="${w}" height="${y(0) - y(a)}" fill="${fill}" rx="2"/>`;
+    g += `<text x="${x0 + w / 2}" y="${y(a) - 6}" text-anchor="middle" style="fill:var(--ink)">${fmt(a)}</text>`;
+    g += `<text x="${x0 + w / 2}" y="${H - 12}" text-anchor="middle">Hole ${i + 1} · SI ${STROKE_INDEX[i]}</text>`;
+  });
+  g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(PAR)}" y2="${y(PAR)}" stroke="var(--ink)" stroke-dasharray="5 4" stroke-width="1.5"/>`;
+  g += `<text x="${W - m.r}" y="${y(PAR) - 6}" text-anchor="end" style="fill:var(--ink)">par 3</text>`;
+  el("holechart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Average strokes per hole">${g}</svg>`;
+})();
+
+// Putting
+(function drawPutting() {
+  const withStrokes = puttRows.map(pr => ({ ...pr, strokes: rows.find(r => r.s === pr.s && r.p === pr.p) }));
+  const stats = playerOrder.map(p => {
+    const list = withStrokes.filter(r => r.p === p);
+    if (!list.length) return null;
+    const holes = list.flatMap(r => r.h);
+    const putts = list.reduce((a, r) => a + r.total, 0);
+    const strokes = list.reduce((a, r) => a + r.strokes.total, 0);
+    return {
+      p, rounds: list.length, avg: putts / list.length, best: Math.min(...list.map(r => r.total)),
+      one: holes.filter(x => x <= 1).length, two: holes.filter(x => x === 2).length, three: holes.filter(x => x >= 3).length,
+      share: putts / strokes, toGreen: (strokes - putts) / list.length,
+    };
+  }).filter(Boolean).sort((a, b) => a.avg - b.avg);
+  el("putttable").innerHTML = `<thead><tr><th>Player</th><th>Rounds</th><th>Avg putts</th><th>Fewest</th><th>1-putts</th><th>2-putts</th><th>3+ putts</th><th>Share of strokes</th><th>Strokes to green</th></tr></thead>
+  <tbody>${stats.map(x => `<tr data-player="${x.p}"><td><span class="swatch" style="background:${colorOf(x.p)}"></span>${x.p}</td>
+    <td>${x.rounds}</td><td>${fmt(x.avg)}</td><td>${x.best}</td><td>${x.one}</td><td>${x.two}</td><td>${x.three}</td>
+    <td>${Math.round(x.share * 100)}%</td><td>${fmt(x.toGreen)}</td></tr>`).join("")}</tbody>`;
+
+  const max = Math.max(...withStrokes.map(r => r.strokes.total));
+  let html = "";
+  PUTT_SESSIONS.forEach((s, i) => {
+    if (i) html += `<div class="bar-gap"></div>`;
+    withStrokes.filter(r => r.s === s).sort((a, b) => a.strokes.total - b.strokes.total).forEach(r => {
+      const g = r.strokes.total - r.total;
+      html += `<div class="bar-row" data-player="${r.p}"><span class="who"><span class="swatch" style="background:${colorOf(r.p)}"></span>${r.p} <small>S${s}</small></span>
+        <div class="bar" title="${r.p}, session ${s}: ${g} to green + ${r.total} putts = ${r.strokes.total}">
+          <span class="g" style="width:${g / max * 100}%">${g}</span><span class="pt" style="width:${r.total / max * 100}%">${r.total}</span></div></div>`;
+    });
+  });
+  el("puttbars").innerHTML = html;
+})();
+
+// Shared helpers for the extra displays
+const regulars = players.filter(x => x.rounds > 1);
+const sessionAvg = {};
+sessions.forEach(s => { const sr = rows.filter(r => r.s === s); sessionAvg[s] = sr.reduce((a, r) => a + r.total, 0) / sr.length; });
+const playerHoleAvg = p => {
+  const pr = rows.filter(r => r.p === p);
+  return Array.from({ length: HOLES }, (_, i) => pr.reduce((a, r) => a + r.h[i], 0) / pr.length);
+};
+const signed = n => (n > 0 ? "+" : n < 0 ? "−" : "") + fmt(Math.abs(n));
+
+// Season race: cumulative strokes gained against each session's average
+(function drawRace() {
+  // From a player's first round on, a missed session adds nothing, so the line stays flat (dashed) until they play again
+  const series = regulars.map(x => {
+    let cum = 0;
+    const pts = sessions.filter(s => s >= x.list[0].s).map(s => {
+      const r = x.list.find(r => r.s === s);
+      if (r) cum += sessionAvg[s] - r.total;
+      return { s, total: cum, missed: !r };
+    });
+    return { p: x.p, pts };
+  });
+  const vals = series.flatMap(sr => sr.pts.map(p => p.total)).concat(0);
+  const lo = Math.floor(Math.min(...vals) / 10) * 10, hi = Math.ceil(Math.max(...vals) / 10) * 10;
+  const W = 960, H = 340, m = { l: 48, r: 44, t: 16, b: 36 };
+  const x = s => m.l + (s - 1) * (W - m.l - m.r) / (sessions.length - 1);
+  const y = v => m.t + (hi - v) * (H - m.t - m.b) / (hi - lo);
+  let g = "";
+  for (let v = lo; v <= hi; v += 10) {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 0 ? "var(--ink)" : "var(--rule)"}"${v === 0 ? ' stroke-dasharray="5 4"' : ""}/>`;
+    g += `<text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v > 0 ? "+" + v : v}</text>`;
+  }
+  sessions.forEach(s => g += `<text x="${x(s)}" y="${H - 12}" text-anchor="middle">Session ${s}</text>`);
+  series.forEach(sr => {
+    const c = colorOf(sr.p);
+    let solid = "", dashed = "";
+    for (let i = 1; i < sr.pts.length; i++) {
+      const a = sr.pts[i - 1], b = sr.pts[i];
+      const seg = `M${x(a.s)} ${y(a.total)} L${x(b.s)} ${y(b.total)} `;
+      if (b.missed) dashed += seg; else solid += seg;
+    }
+    g += `<g data-player="${sr.p}">`;
+    if (solid) g += `<path d="${solid}" fill="none" stroke="${c}" stroke-width="2.25"/>`;
+    if (dashed) g += `<path d="${dashed}" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="5 5" opacity="0.8"/>`;
+    sr.pts.filter(pt => !pt.missed).forEach(pt => g += `<circle cx="${x(pt.s)}" cy="${y(pt.total)}" r="4" fill="${c}" stroke="var(--paper)" stroke-width="1.5"><title>${sr.p} after session ${pt.s}: ${signed(pt.total)}</title></circle>`);
+    g += `</g>`;
+  });
+  el("racechart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Cumulative strokes gained on the field by session">${g}</svg>`;
+  el("racelegend").innerHTML = series.map(sr => {
+    const last = sr.pts[sr.pts.length - 1].total;
+    return `<span data-player="${sr.p}"><span class="swatch" style="background:${colorOf(sr.p)}"></span>${sr.p} <span class="num muted">${signed(last)}</span></span>`;
+  }).join("");
+})();
+
+// Player-by-hole heatmap
+(function drawHeatmap() {
+  const shade = a => a <= 4.5 ? "var(--heat-0)" : a <= 6 ? "var(--heat-1)" : a <= 7.25 ? "var(--heat-2)" : a <= 8.25 ? "var(--heat-3)" : "var(--heat-4)";
+  const row = (label, avgs, mark) => {
+    const best = Math.min(...avgs), worst = Math.max(...avgs);
+    return avgs.map(a => {
+      const cls = mark ? (a === best ? " best" : a === worst ? " worst" : "") : "";
+      return `<td class="hm${cls}" style="background:${shade(a)}">${fmt(a)}</td>`;
+    }).join("");
+  };
+  el("heatmap").innerHTML = `<thead><tr><th>Player</th>${STROKE_INDEX.map((si, i) => `<th class="h">${i + 1}<br><span style="text-transform:none">SI ${si}</span></th>`).join("")}<th>Rounds</th></tr></thead>
+  <tbody>${players.map(x => `<tr data-player="${x.p}"><td><span class="swatch" style="background:${colorOf(x.p)}"></span>${x.p}</td>${row(x.p, playerHoleAvg(x.p), x.rounds > 1)}<td>${x.rounds}</td></tr>`).join("")}
+  <tr class="group"><td>Group</td>${row("Group", holeAvg, true)}<td>${rows.length}</td></tr></tbody>`;
+})();
+
+// Club stroke index against the group's own ranking
+(function drawSlope() {
+  const holes = Array.from({ length: HOLES }, (_, i) => i);
+  const club = [...holes].sort((a, b) => STROKE_INDEX[a] - STROKE_INDEX[b]);
+  const group = [...holes].sort((a, b) => holeAvg[b] - holeAvg[a]);
+  const W = 720, H = 320, lx = 230, rx = 490, top = 56, step = 44;
+  let g = `<text x="${lx}" y="24" text-anchor="middle" style="fill:var(--ink)">Club stroke index</text>
+    <text x="${rx}" y="24" text-anchor="middle" style="fill:var(--ink)">Your group's average</text>`;
+  holes.forEach(h => {
+    const cr = club.indexOf(h), gr = group.indexOf(h);
+    const col = gr < cr ? "var(--flag)" : gr > cr ? "var(--accent)" : "var(--muted)";
+    const y1 = top + cr * step, y2 = top + gr * step;
+    g += `<line x1="${lx}" y1="${y1}" x2="${rx}" y2="${y2}" stroke="${col}" stroke-width="${Math.abs(gr - cr) >= 2 ? 3 : 1.75}"/>`;
+    g += `<circle cx="${lx}" cy="${y1}" r="5" fill="${col}"/><circle cx="${rx}" cy="${y2}" r="5" fill="${col}"/>`;
+    g += `<text x="${lx - 14}" y="${y1 + 4}" text-anchor="end" style="fill:var(--ink)">Hole ${h + 1}  ·  SI ${STROKE_INDEX[h]}</text>`;
+    g += `<text x="${rx + 14}" y="${y2 + 4}" text-anchor="start" style="fill:var(--ink)">Hole ${h + 1}  ·  ${fmt(holeAvg[h])}</text>`;
+  });
+  g += `<text x="${(lx + rx) / 2}" y="${top - 18}" text-anchor="middle">hardest ↑</text>`;
+  g += `<text x="${(lx + rx) / 2}" y="${top + 5 * step + 30}" text-anchor="middle">easiest ↓</text>`;
+  el("slope").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;display:block;margin:0 auto" role="img" aria-label="Club stroke index ranking compared with the group's ranking">${g}</svg>`;
+})();
+
+// Score mix per player
+(function drawDist() {
+  const values = [3, 4, 5, 6, 7, 8, 9];
+  const label = v => v === PAR ? "3 (par)" : v === MAX_SCORE ? "9 (max)" : String(v);
+  el("distlegend").innerHTML = values.map(v => `<span><span class="swatch" style="background:var(--d${v});border-radius:2px"></span>${label(v)}</span>`).join("");
+  el("dist").innerHTML = players.map(x => {
+    const holes = rows.filter(r => r.p === x.p).flatMap(r => r.h);
+    const n = holes.length;
+    const segs = values.map(v => {
+      const c = holes.filter(h => h === v).length;
+      return c ? `<span style="width:${c / n * 100}%;background:var(--d${v})" title="${x.p}: ${c} of ${n} holes in ${v}"></span>` : "";
+    }).join("");
+    const nines = holes.filter(h => h === MAX_SCORE).length;
+    return `<div class="dist-row" data-player="${x.p}"><span class="who"><span class="swatch" style="background:${colorOf(x.p)}"></span>${x.p} <small>${n} holes</small></span>
+      <div class="bar">${segs}</div><span class="tail">${Math.round(nines / n * 100)}% at 9</span></div>`;
+  }).join("");
+})();
+
+// Hole replay: strokes behind the leader after each hole, drawn up to the hole the race is on
+function drawReplay(s, upto = HOLES) {
+  const sr = rows.filter(r => r.s === s);
+  const cum = sr.map(r => { let c = 0; return { p: r.p, v: [0, ...r.h.map(x => (c += x))] }; });
+  const lead = cum[0].v.map((_, i) => Math.min(...cum.map(c => c.v[i])));
+  const gaps = cum.map(c => ({ p: c.p, g: c.v.map((v, i) => v - lead[i]) }));
+  const hi = Math.max(5, Math.ceil(Math.max(...gaps.flatMap(x => x.g)) / 5) * 5);
+  const W = 960, H = 320, m = { l: 44, r: 190, t: 20, b: 36 };
+  const x = i => m.l + i * (W - m.l - m.r) / HOLES;
+  const y = v => m.t + v * (H - m.t - m.b) / hi;
+  const line = (gp, from, to) => gp.g.slice(from, to + 1).map((v, i) => (i ? "L" : "M") + x(from + i) + " " + y(v)).join(" ");
+  let g = "";
+  for (let v = 0; v <= hi; v += hi > 10 ? 5 : 2) {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 0 ? "var(--ink)" : "var(--rule)"}"/>`;
+    g += `<text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${v === 0 ? "lead" : "+" + v}</text>`;
+  }
+  for (let i = 0; i <= HOLES; i++) g += `<text x="${x(i)}" y="${H - 12}" text-anchor="middle"${i === upto ? ' style="fill:var(--ink);font-weight:500"' : ""}>${i === 0 ? "Start" : "Hole " + i}</text>`;
+  if (upto < HOLES) g += `<line x1="${x(upto)}" x2="${x(upto)}" y1="${m.t - 8}" y2="${H - m.b}" stroke="var(--ink)" stroke-dasharray="3 4"/>`;
+  gaps.forEach(gp => {
+    const c = colorOf(gp.p);
+    g += `<g data-player="${gp.p}">`;
+    if (upto < HOLES) g += `<path d="${line(gp, upto, HOLES)}" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.22"/>`;
+    if (upto > 0) g += `<path d="${line(gp, 0, upto)}" fill="none" stroke="${c}" stroke-width="2.25"/>`;
+    gp.g.forEach((v, i) => { if (i && i <= upto) g += `<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${c}" stroke="var(--paper)" stroke-width="1.5"><title>${gp.p} after hole ${i}: ${v ? v + " behind" : "leading"}</title></circle>`; });
+    g += `</g>`;
+  });
+  // End labels, grouped when players finish level; faint until the race reaches the last hole
+  const byGap = {};
+  gaps.forEach(gp => (byGap[gp.g[HOLES]] = byGap[gp.g[HOLES]] || []).push(gp.p));
+  let lastY = -Infinity;
+  Object.keys(byGap).map(Number).sort((a, b) => a - b).forEach(v => {
+    const ly = Math.max(y(v) + 4, lastY + 16); lastY = ly;
+    const who = byGap[v].length === 1 ? ` data-player="${byGap[v][0]}"` : "";
+    g += `<text${who} x="${x(HOLES) + 12}" y="${ly}" style="fill:var(--ink)"${upto < HOLES ? ' opacity="0.3"' : ""}>${byGap[v].join(", ")} ${v ? "+" + v : "wins"}</text>`;
+  });
+  el("replaychart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Strokes behind the leader after each hole, session ${s}">${g}</svg>`;
+  applyFocus();
+}
+
+// Hole race: an animated leaderboard that plays a session back one hole at a time
+const RACE_STEP_MS = 1300;
+const reduceMotion = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
+// Bars run on each session's worst final total, so the gaps stay readable on a phone
+const race = { s: null, k: HOLES, order: [], timer: null, scale: 1 };
+const shotColor = v => { const o = v - PAR; return o <= 0 ? "var(--heat-0)" : o <= 2 ? "var(--heat-1)" : o <= 4 ? "var(--heat-2)" : o <= 6 ? "var(--heat-3)" : "var(--heat-4)"; };
+
+function setupRace(s, k) {
+  stopRace();
+  race.s = s;
+  const sr = rows.filter(r => r.s === s);
+  race.scale = Math.max(...sr.map(r => r.total));
+  race.order = playerOrder.filter(p => sr.some(r => r.p === p));
+  el("track").style.height = `calc(${sr.length} * var(--rowh))`;
+  el("track").innerHTML = `<div class="track-axis" aria-hidden="true"><div class="par-line" id="parline"><span></span></div></div>` +
+    race.order.map((p, i) => `<div class="lb-row" data-player="${p}" data-toggle style="--ring:${colorOf(p)};--i:${i};--f:0">
+      <div class="lb-name"><span class="lb-rank"></span><b>${p}</b></div>
+      <div class="lb-lane"><div class="lb-bar"></div><div class="lb-av">${avatarHTML(p)}</div><div class="lb-num"></div></div></div>`).join("");
+  [...el("rtabs").children].forEach(b => b.setAttribute("aria-selected", String(+b.dataset.s === s)));
+  raceStep(k);
+}
+
+function raceStep(k) {
+  race.k = k;
+  const s = race.s;
+  const sr = rows.filter(r => r.s === s);
+  const cum = sr.map(r => ({ p: r.p, v: r.h.slice(0, k).reduce((a, b) => a + b, 0), shot: r.h[k - 1] }));
+  // Level players keep their previous order, so rows only move when the standings really change
+  cum.sort((a, b) => a.v - b.v || race.order.indexOf(a.p) - race.order.indexOf(b.p));
+  race.order = cum.map(c => c.p);
+  const lead = cum[0].v;
+  cum.forEach((c, i) => {
+    const node = el("track").querySelector(`.lb-row[data-player="${c.p}"]`);
+    const level = cum.filter(o => o.v === c.v).length > 1;
+    node.style.setProperty("--i", i);
+    node.style.setProperty("--f", c.v / race.scale);
+    node.classList.toggle("lb-lead", k > 0 && c.v === lead);
+    node.querySelector(".lb-rank").textContent = k ? (level ? "T" : "") + (cum.findIndex(o => o.v === c.v) + 1) : "";
+    node.querySelector(".lb-num").innerHTML = k ? `<strong>${c.v}</strong> <span class="gap">${c.v === lead ? (level ? "level" : "leads") : "+" + (c.v - lead)}</span><span class="shot pop" style="background:${shotColor(c.shot)}" title="${c.p} took ${c.shot} on hole ${k}">${c.shot} on ${k}</span>` : "";
+  });
+  const pl = el("parline");
+  pl.style.setProperty("--f", Math.min(1, PAR * k / race.scale));
+  pl.querySelector("span").textContent = k ? `par ${PAR * k}` : "";
+  pl.style.visibility = k ? "visible" : "hidden";
+
+  const leaders = cum.filter(c => c.v === lead).map(c => c.p);
+  el("stage").innerHTML = k === 0 ? `<small>Session ${s}</small>On the first tee`
+    : k === HOLES ? `<small>Session ${s} · final</small>${leaders.join(" and ")} ${leaders.length > 1 ? "tie" : "wins"}`
+    : `<small>Session ${s}</small>After hole ${k} of ${HOLES}`;
+  const holeAvgNow = k ? sr.reduce((a, r) => a + r.h[k - 1], 0) / sr.length : 0;
+  const margin = cum.length > 1 ? cum[1].v - lead : 0;
+  el("racenote").textContent = k === 0 ? `${sr.length} players` : k === HOLES ? (margin ? `Won by ${margin}` : "Level at the top") : `Hole ${k} played at ${fmt(holeAvgNow)} on average`;
+  el("rslider").value = k;
+  el("rback").disabled = k === 0;
+  el("rnext").disabled = k === HOLES;
+  el("rplay").textContent = race.timer ? "Pause" : k === HOLES ? "Replay" : "Play";
+  drawReplay(s, k);
+}
+
+function stopRace() {
+  clearInterval(race.timer);
+  race.timer = null;
+  if (race.s !== null) el("rplay").textContent = race.k === HOLES ? "Replay" : "Play";
+}
+function playRace() {
+  clearInterval(race.timer);
+  if (race.k === HOLES) raceStep(0);
+  race.timer = setInterval(() => {
+    raceStep(race.k + 1);
+    if (race.k >= HOLES) stopRace();
+  }, RACE_STEP_MS);
+  el("rplay").textContent = "Pause";
+}
+el("rplay").addEventListener("click", () => race.timer ? stopRace() : playRace());
+el("rback").addEventListener("click", () => { stopRace(); raceStep(Math.max(0, race.k - 1)); });
+el("rnext").addEventListener("click", () => { stopRace(); raceStep(Math.min(HOLES, race.k + 1)); });
+el("rslider").addEventListener("input", e => { stopRace(); raceStep(+e.target.value); });
+el("rtabs").innerHTML = sessions.map(s => `<button type="button" role="tab" data-s="${s}">Session ${s}</button>`).join("");
+el("rtabs").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (reduceMotion) return setupRace(+b.dataset.s, HOLES);
+  setupRace(+b.dataset.s, 0);
+  playRace();
+});
+
+// Player profile cards
+(function drawProfiles() {
+  el("profilecards").innerHTML = players.map(x => {
+    const ha = playerHoleAvg(x.p);
+    const bestH = ha.indexOf(Math.min(...ha)), worstH = ha.indexOf(Math.max(...ha));
+    const bestRound = x.list.reduce((a, r) => (r.total < a.total ? r : a));
+    let w = 0, l = 0, t = 0;
+    x.list.forEach(r => rows.filter(o => o.s === r.s && o.p !== x.p).forEach(o => (r.total < o.total ? w++ : r.total > o.total ? l++ : t++)));
+    const putts = puttRows.filter(r => r.p === x.p);
+    const holes = x.list.flatMap(r => r.h);
+    const gained = x.list.reduce((a, r) => a + sessionAvg[r.s] - r.total, 0) / x.rounds;
+    const items = [
+      ["Rounds", `${x.rounds}${x.wins ? `, ${x.wins} won` : ""}`],
+      ["Best round", `${bestRound.total} (session ${bestRound.s})`],
+      ["Vs the field", `${signed(gained)} per round`],
+      ["Record vs others", `${w}-${l}${t ? "-" + t : ""}`],
+      ["Best hole", `Hole ${bestH + 1} (${fmt(ha[bestH])})`],
+      ["Worst hole", `Hole ${worstH + 1} (${fmt(ha[worstH])})`],
+      ["Holes at 9", `${holes.filter(h => h === MAX_SCORE).length} of ${holes.length}`],
+      ["Avg putts", putts.length ? `${fmt(putts.reduce((a, r) => a + r.total, 0) / putts.length)} over ${putts.length} round${putts.length === 1 ? "" : "s"}` : "not counted"],
+    ];
+    return `<article class="pcard" data-player="${x.p}" data-toggle tabindex="0" aria-label="Follow ${x.p}">
+      <div class="phead">
+        <div class="pid">${AVATARS[x.p] ? `<span class="avatar" role="img" aria-label="${x.p}" style="background-image:url(${AVATARS[x.p]});--ring:${colorOf(x.p)}"></span>` : ""}<h3>${x.p}</h3></div>
+        <span class="big num">${fmt(x.avg)}</span></div>
+      ${spark(x.list)}
+      <dl>${items.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    </article>`;
+  }).join("");
+})();
+
+// Scorecards
+const heat = v => {
+  const over = v - PAR;
+  return over <= 0 ? "var(--heat-0)" : over <= 2 ? "var(--heat-1)" : over <= 4 ? "var(--heat-2)" : over <= 6 ? "var(--heat-3)" : "var(--heat-4)";
+};
+el("key").innerHTML = [["par", 0], ["+1 to +2", 1], ["+3 to +4", 2], ["+5 to +6 (max)", 3]]
+  .map(([t, i]) => `<span><i style="background:var(--heat-${i})"></i>${t}</span>`).join("")
+  + `<span id="puttnote" hidden>Small figure under a score: putts on that hole</span>`
+  + `<span id="capnote" hidden>* Scored higher, capped at ${MAX_SCORE}</span>`;
+
+function showSession(s) {
+  const sr = rows.filter(r => r.s === s).sort((a, b) => a.total - b.total);
+  const avg = holeAvg.map((_, i) => sr.reduce((a, r) => a + r.h[i], 0) / sr.length);
+  const hasPutts = PUTT_SESSIONS.includes(s);
+  el("card").innerHTML = `<thead><tr><th>Player</th>${Array.from({ length: HOLES }, (_, i) => `<th class="h">${i + 1}</th>`).join("")}<th>Total</th><th>To par</th>${hasPutts ? "<th>Putts</th>" : ""}</tr></thead>
+  <tbody><tr><td class="muted">Stroke index</td>${STROKE_INDEX.map(v => `<td class="h muted">${v}</td>`).join("")}<td></td><td></td>${hasPutts ? "<td></td>" : ""}</tr>
+  <tr class="par"><td>Par</td>${Array(HOLES).fill(`<td class="h">${PAR}</td>`).join("")}<td>${COURSE_PAR}</td><td></td>${hasPutts ? "<td></td>" : ""}</tr>
+  ${sr.map(r => { const pt = puttsOf(s, r.p); return `<tr data-player="${r.p}"><td><span class="swatch" style="background:${colorOf(r.p)}"></span>${r.p}</td>
+    ${r.h.map((v, i) => `<td class="h" style="background:${heat(v)}"${r.raw[i] > v ? ` title="Scored ${r.raw[i]}, capped at ${MAX_SCORE}"` : ""}>${v}${r.raw[i] > v ? "*" : ""}${pt ? `<small>${pt.h[i]}</small>` : ""}</td>`).join("")}
+    <td class="${winners[s].includes(r.p) ? "win" : ""}"><strong>${r.total}</strong></td><td>${toPar(r.total - COURSE_PAR)}</td>${hasPutts ? `<td>${pt ? pt.total : "-"}</td>` : ""}</tr>`; }).join("")}
+  <tr><td class="muted">Session avg</td>${avg.map(a => `<td class="h muted">${fmt(a)}</td>`).join("")}<td class="muted">${fmt(sr.reduce((a, r) => a + r.total, 0) / sr.length)}</td><td></td>${hasPutts ? "<td></td>" : ""}</tr></tbody>`;
+  el("puttnote").hidden = !hasPutts;
+  el("capnote").hidden = !sr.some(r => r.raw.some((v, i) => v > r.h[i]));
+  [...el("tabs").children].forEach(b => b.setAttribute("aria-selected", String(+b.dataset.s === s)));
+  try { localStorage.setItem("golf-session", s); } catch (e) {}
+  applyFocus();
+}
+el("tabs").innerHTML = sessions.map(s => `<button type="button" role="tab" id="tab-${s}" data-s="${s}">Session ${s}</button>`).join("");
+el("tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (b) showSession(+b.dataset.s); });
+let start = sessions[sessions.length - 1];
+try { const v = +localStorage.getItem("golf-session"); if (sessions.includes(v)) start = v; } catch (e) {}
+showSession(start);
+
+// Follow-a-player chips, summary and the shareable ?player= link
+el("chips").innerHTML = players.map(x => `<button type="button" class="chip" aria-pressed="false" data-chip="${x.p}" style="--ring:${colorOf(x.p)}">${avatarHTML(x.p)}${x.p}</button>`).join("");
+function setFocus(p) {
+  focus = playerOrder.includes(p) ? p : null;
+  [...el("chips").children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.chip === focus)));
+  const x = players.find(x => x.p === focus);
+  if (x) {
+    const rank = regulars.findIndex(r => r.p === focus) + 1;
+    el("focussummary").innerHTML = `<strong>${x.p}</strong>: ${x.rounds} round${x.rounds === 1 ? "" : "s"}, averaging <span class="num">${fmt(x.avg)}</span>`
+      + (rank ? ` (${rank} of ${regulars.length} regulars)` : " (one round, not ranked)")
+      + `, best <span class="num">${x.best}</span>, ${x.wins ? `${x.wins} win${x.wins === 1 ? "" : "s"}` : "no wins yet"}. Everyone else is faded below.`;
+    el("following").textContent = `Following ${x.p} ✕`;
+    el("following").style.setProperty("--ring", colorOf(x.p));
+    el("following").setAttribute("aria-label", `Stop following ${x.p}`);
+  } else {
+    el("focussummary").textContent = "Pick a name to pick them out in every chart and table below.";
+  }
+  el("following").hidden = !x;
+  try {
+    const u = new URL(location.href);
+    x ? u.searchParams.set("player", x.p) : u.searchParams.delete("player");
+    history.replaceState(null, "", u);
+  } catch (e) {}
+  applyFocus();
+}
+const toggleFocus = p => setFocus(p === focus ? null : p);
+el("chips").addEventListener("click", e => { const b = e.target.closest("[data-chip]"); if (b) toggleFocus(b.dataset.chip); });
+el("following").addEventListener("click", () => setFocus(null));
+document.addEventListener("click", e => { const t = e.target.closest("[data-toggle]"); if (t) toggleFocus(t.dataset.player); });
+document.addEventListener("keydown", e => {
+  const t = e.target.closest && e.target.closest(".pcard[data-toggle]");
+  if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggleFocus(t.dataset.player); }
+});
+
+// Start the race on the latest session; it plays once the first time it scrolls into view
+const latest = sessions[sessions.length - 1];
+setupRace(latest, reduceMotion ? HOLES : 0);
+if (!reduceMotion && "IntersectionObserver" in window) {
+  const io = new IntersectionObserver(entries => {
+    if (!entries.some(en => en.isIntersecting)) return;
+    io.disconnect();
+    if (race.s === latest && race.k === 0 && !race.timer) setTimeout(playRace, 400);
+  }, { threshold: 0.5 });
+  io.observe(el("track"));
+} else if (!reduceMotion) setupRace(latest, HOLES);
+
+let initial = null;
+try { initial = new URL(location.href).searchParams.get("player"); } catch (e) {}
+setFocus(initial);
+</script>
+</body>
+</html>
