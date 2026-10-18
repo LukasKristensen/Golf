@@ -99,7 +99,7 @@ svg text { fill: var(--muted); font-family: var(--mono); font-size: 12.5px; }
 .chart-card { overflow-x: auto; }
 .chart-card svg { min-width: 640px; }
 td.loss { color: var(--flag); }
-section[id] { scroll-margin-top: 64px; }
+section[id] { scroll-margin-top: 84px; }
 .toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--rule); display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
 .toc::-webkit-scrollbar { display: none; }
 .toc a { flex: none; font-family: var(--mono); font-size: 0.78rem; padding: 4px 11px; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink); background: var(--paper); text-decoration: none; }
@@ -354,8 +354,10 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 .toc { background: linear-gradient(90deg, var(--accent), var(--p6)) 0 100% / var(--prog, 0%) 3px no-repeat, var(--bg); }
 .toc a { transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
 .toc a[aria-current="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.rail { position: fixed; right: max(18px, calc((100vw - 1040px) / 2 - 92px)); top: 50%; transform: translateY(-50%); height: min(66vh, 600px); width: 30px; z-index: 6; display: none; }
-@media (min-width: 1240px) { .rail { display: block; } }
+.rail { position: fixed; left: calc(50% + 520px + 24px); top: 50%; transform: translateY(-50%); height: min(66vh, 600px); width: 30px; z-index: 6; display: none; }
+@media (min-width: 1400px) { .rail { display: block; } }
+/* An invisible hover zone over the label area, so moving from a dot to its label never drops the hover */
+.rail::before { content: ""; position: absolute; left: -6px; top: -24px; bottom: -24px; width: 190px; }
 .rail-track { position: absolute; left: 13px; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--rule); }
 .rail-fill { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--p, 0) * 100%); border-radius: 2px; background: linear-gradient(180deg, var(--accent), var(--p6)); box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent); }
 .rail-tee { position: absolute; left: 7px; top: -18px; width: 16px; height: 7px; border-radius: 2px; background: var(--c-tee); }
@@ -364,16 +366,19 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 .rail-dot.done { background: var(--accent); border-color: var(--accent); }
 .rail-dot.active { transform: scale(1.45); border-color: var(--ink); background: var(--paper); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); }
 .rail-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.rail-label { position: absolute; right: 22px; top: 50%; transform: translate(8px, -50%); white-space: nowrap; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 4px 14px rgba(0,0,0,0.12); opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; }
+.rail-label { position: absolute; left: 22px; top: 50%; transform: translate(-6px, -50%); white-space: nowrap; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 4px 14px rgba(0,0,0,0.12); opacity: 0; pointer-events: none; transition: opacity 0.25s ease 0.4s, transform 0.25s ease 0.4s; }
 .rail-dot.active .rail-label { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.rail:hover .rail-label, .rail-dot:focus-visible .rail-label { opacity: 1; transform: translate(0, -50%); }
-.rail.moving .rail-dot.active .rail-label { opacity: 1; transform: translate(0, -50%); }
+.rail:hover .rail-label, .rail:focus-within .rail-label, .rail-dot.active .rail-label { opacity: 1; transform: translate(0, -50%); pointer-events: auto; cursor: pointer; transition-delay: 0s; }
+.rail-label:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.rail:hover .rail-dot:hover .rail-label { border-color: var(--ink); }
+.rail-dot:hover { border-color: var(--ink); }
+.rail.moving .rail-dot.active .rail-label { box-shadow: 0 4px 18px color-mix(in srgb, var(--accent) 45%, transparent); }
 .rail-ball { position: absolute; left: 5px; top: calc(var(--p, 0) * 100%); width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; z-index: 2; pointer-events: none;
   background: radial-gradient(circle at 34% 30%, #fff 0 22%, #ececec 50%, #bcbcbc 100%); box-shadow: 0 3px 8px rgba(0,0,0,0.35); transition: transform 0.4s ease, opacity 0.4s ease; }
 .rail-ball::after { content: ""; position: absolute; inset: 0; border-radius: 50%; transform: rotate(var(--rot, 0deg));
   background: radial-gradient(circle, rgba(0,0,0,0.18) 0 1px, transparent 1.6px) 0 0 / 5px 5px; mask: radial-gradient(circle, #000 60%, transparent 72%); -webkit-mask: radial-gradient(circle, #000 60%, transparent 72%); }
 .rail-ball.holed { transform: translateY(8px) scale(0.55); opacity: 0.75; }
-.rail-count { position: absolute; left: 50%; top: calc(100% + 34px); transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+.rail-count { position: absolute; left: 2px; top: calc(100% + 34px); font-family: var(--mono); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
 .rail-count b { color: var(--ink); font-weight: 500; }
 @media (prefers-reduced-motion: reduce) { .rail-dot, .rail-ball, .rail-label, .toc a { transition: none; } }
 
