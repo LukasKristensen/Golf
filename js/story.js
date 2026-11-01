@@ -127,12 +127,14 @@ const hideTip = () => (tip.hidden = true);
       cell.forEach((r, j) => {
         const cx = x0 + 12 + (j % perLine) * step, cy = yOf(v) + rowH / 2 + (Math.floor(j / perLine) - (cell.length > perLine ? 0.5 : 0)) * step;
         const capped = r.raw[i] > v ? `, scored ${r.raw[i]} and capped` : "";
-        g += `<g class="hdot" data-player="${r.p}" data-tip="${r.p} · session ${r.s} · hole ${i + 1}: <b>${v}</b> (${toPar(v - PAR)})${capped}"><circle class="hit" cx="${cx}" cy="${cy}" r="7.5"/><circle class="mark" cx="${cx}" cy="${cy}" r="5" fill="${colorOf(r.p)}"/></g>`;
+        const sd = sandOf(r.s, r.p), sand = sd && sd.h[i] ? sd.h[i] : 0;
+        g += `<g class="hdot" data-player="${r.p}" data-tip="${r.p} · session ${r.s} · hole ${i + 1}: <b>${v}</b> (${toPar(v - PAR)})${capped}${sand ? `, ${shotsWord(sand)}` : ""}"><circle class="hit" cx="${cx}" cy="${cy}" r="7.5"/>${sand ? `<circle class="sand-ring" cx="${cx}" cy="${cy}" r="7.6"/>` : ""}<circle class="mark" cx="${cx}" cy="${cy}" r="5" fill="${colorOf(r.p)}"/></g>`;
       });
     });
   }
   el("dotchart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Every hole score as a dot, by hole and number of strokes">${g}</svg>`;
-  el("dotlegend").innerHTML = playerOrder.map(p => `<span data-player="${p}"><span class="swatch" style="background:${colorOf(p)}"></span>${p}</span>`).join("");
+  el("dotlegend").innerHTML = playerOrder.map(p => `<span data-player="${p}"><span class="swatch" style="background:${colorOf(p)}"></span>${p}</span>`).join("")
+    + (sandRows.some(r => r.total > 0) ? `<span><span class="swatch sand-swatch"></span>Bunker shot on the hole</span>` : "");
   const svg = el("dotchart").firstElementChild;
   svg.addEventListener("pointermove", e => { const d = e.target.closest(".hdot"); d ? showTip(d.dataset.tip, e) : hideTip(); });
   svg.addEventListener("pointerleave", hideTip);

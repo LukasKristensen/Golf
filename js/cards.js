@@ -53,6 +53,7 @@ el("profilecards").innerHTML = cardData.map(({ x, v, ovr, arch, rec }) => {
     ["Best hole", `Hole ${bestH + 1} (${fmt(ha[bestH])})`],
     ["Worst hole", `Hole ${worstH + 1} (${fmt(ha[worstH])})`],
     ["Holes at 9", `${holes.filter(h => h === MAX_SCORE).length} of ${holes.length}`],
+    ["Bunker shots", sandRows.some(r => r.p === x.p) ? `${sandRows.filter(r => r.p === x.p).reduce((a, r) => a + r.total, 0)} in ${sandRows.filter(r => r.p === x.p).length}` : "not counted"],
     ["Avg putts", putts.length ? `${fmt(putts.reduce((a, r) => a + r.total, 0) / putts.length)} over ${putts.length}` : "not counted"],
   ];
   return `<div class="twrap" data-player="${x.p}">

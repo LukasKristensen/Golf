@@ -20,6 +20,16 @@ const rows = parsed.filter(r => r.metric === "Strokes").map(r => {
 });
 const puttRows = parsed.filter(r => r.metric === "Putts" && PUTT_SESSIONS.includes(r.s));
 const puttsOf = (s, p) => puttRows.find(r => r.s === s && r.p === p);
+// Bunker shots, counted from session 7 on; a session without Sand rows was not tracked
+const sandRows = parsed.filter(r => r.metric === "Sand");
+const SAND_SESSIONS = [...new Set(sandRows.map(r => r.s))].sort((a, b) => a - b);
+const sandOf = (s, p) => sandRows.find(r => r.s === s && r.p === p);
+// Sand on one hole across tracked rounds, for the group or one player
+function sandOnHole(i, who) {
+  const list = sandRows.filter(r => !who || r.p === who);
+  return { rounds: list.length, shots: list.reduce((a, r) => a + r.h[i], 0), by: list.filter(r => r.h[i] > 0).map(r => ({ p: r.p, s: r.s, n: r.h[i] })) };
+}
+const shotsWord = n => `${n} bunker shot${n === 1 ? "" : "s"}`;
 const sessions = [...new Set(rows.map(r => r.s))].sort((a, b) => a - b);
 const playerOrder = ["Lukas", "Laurits", "Mikkel", "Daniel", "Oskar", "Tobias"];
 const colorOf = p => `var(--p${playerOrder.indexOf(p) + 1})`;

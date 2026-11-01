@@ -54,6 +54,9 @@ const COURSE = [
 
 function holeSVG(i, big) {
   const h = COURSE[i];
+  // Bunker shots light up the bunker nearest the pin; the scorecard does not say which bunker, so this is the likely one
+  const sand = sandOnHole(i, big ? focus : null).shots;
+  const hot = sand ? h.bunkers.reduce((b, x, k) => Math.hypot(x[0] - h.pin[0], x[1] - h.pin[1]) < Math.hypot(h.bunkers[b][0] - h.pin[0], h.bunkers[b][1] - h.pin[1]) ? k : b, 0) : -1;
   const id = `h${i}${big ? "b" : "s"}`;
   const [tx, ty] = h.tee, [px, py] = h.pin;
   let s = `<svg viewBox="0 125 891 1660" ${big ? 'class="hole-big"' : ""} role="img" aria-label="Illustrated layout of hole ${i + 1}">`;
@@ -62,9 +65,17 @@ function holeSVG(i, big) {
   h.buildings.forEach(p => s += `<polygon points="${p}" fill="var(--c-building)"/>`);
   s += `<polygon points="${h.fairway}" fill="var(--c-fairway)" stroke="var(--c-fairway)" stroke-width="60" stroke-linejoin="round"/>`;
   s += `<ellipse cx="${h.green[0]}" cy="${h.green[1]}" rx="${h.green[2]}" ry="${h.green[3]}" fill="var(--c-green)" stroke="var(--c-fairway)" stroke-width="10"/>`;
-  h.bunkers.forEach(([cx, cy, rx, ry]) => s += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--c-sand)"/>`);
+  h.bunkers.forEach(([cx, cy, rx, ry], k) => {
+    if (k === hot) s += `<ellipse class="sand-pulse" cx="${cx}" cy="${cy}" rx="${rx + 18}" ry="${ry + 18}"/>`;
+    s += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="var(--c-sand)"${k === hot ? ' stroke="#fff" stroke-width="5"' : ""}/>`;
+  });
   s += `<g fill="var(--c-shadow)">${h.trees.map(([cx, cy, r]) => `<circle cx="${cx + r * 0.18}" cy="${cy + r * 0.14}" r="${r}"/>`).join("")}</g>`;
   s += `<g fill="var(--c-tree)">${h.trees.map(([cx, cy, r]) => `<circle cx="${cx}" cy="${cy}" r="${r}"/>`).join("")}</g>`;
+  if (hot >= 0 && big) {
+    // The tag sits beside the bunker, on whichever side has room, above the trees
+    const [bx, by, brx] = h.bunkers[hot], w = 250, tx0 = bx + brx + w + 30 > 891 ? bx - brx - 24 - w : bx + brx + 24;
+    s += `<g class="sand-tag"><rect x="${tx0}" y="${by - 34}" width="${w}" height="68" rx="34"/><text x="${tx0 + w / 2}" y="${by + 12}" text-anchor="middle">${sand} in sand</text></g>`;
+  }
   // Line of play, tee box and flag
   s += `<line class="lop" x1="${tx}" y1="${ty}" x2="${px}" y2="${py}" stroke="#fff" stroke-width="${big ? 5 : 8}" stroke-dasharray="${big ? "4 18" : "6 22"}" stroke-linecap="round" opacity="0.9"/>`;
   s += `<rect x="${tx - 34}" y="${ty - 14}" width="68" height="28" rx="6" fill="var(--c-tee)" stroke="#fff" stroke-width="4"/>`;
@@ -81,7 +92,7 @@ const groupRank = [...holeAvg.keys()].sort((a, b) => holeAvg[b] - holeAvg[a]);
   el("holestrip").innerHTML = COURSE.map((h, i) => `<button type="button" class="hcard" data-hole="${i}" aria-pressed="false" aria-label="Hole ${i + 1}, ${h.dist} metres, averages ${fmt(holeAvg[i])}">
     <span class="hc-top" style="background:var(--heat-${HEAT_STEPS(holeAvg[i])})"><b>${i + 1}</b><span>${h.dist} m</span></span>
     ${holeSVG(i, false)}
-    <span class="hc-foot"><span class="num">${fmt(holeAvg[i])}</span> avg</span>
+    <span class="hc-foot"><span class="num">${fmt(holeAvg[i])}</span> avg${sandOnHole(i).shots ? `<span class="hc-sand" title="${shotsWord(sandOnHole(i).shots)} in tracked rounds">${sandOnHole(i).shots}</span>` : ""}</span>
   </button>`).join("");
   el("holestrip").addEventListener("click", e => { const b = e.target.closest(".hcard"); if (b) showHole(+b.dataset.hole); });
   el("holestrip").addEventListener("keydown", e => {
@@ -119,6 +130,7 @@ function showHole(i, focusCard) {
       <dt>Average</dt><dd>${fmt(st.avg)}${me ? ` <span class="muted">(${fmt(g.avg)})</span>` : ""}</dd>
       <dt>Best score</dt><dd>${st.best} <span class="muted">${me ? "" : st.bestBy.join(", ")}</span></dd>
       <dt>Ended on a 9</dt><dd>${Math.round(st.nines / st.n * 100)}%${me ? ` <span class="muted">(${Math.round(g.nines / g.n * 100)}%)</span>` : ""}</dd>
+      ${SAND_SESSIONS.length ? sandStatRow(i) : ""}
       <dt>Club stroke index</dt><dd>${STROKE_INDEX[i]} <span class="muted">(club rates it ${rankByClub(i)} of ${HOLES} for difficulty)</span></dd>
       <dt>Group difficulty</dt><dd>${rank} of ${HOLES}</dd>
     </dl>
@@ -127,6 +139,13 @@ function showHole(i, focusCard) {
     </div>`;
   playBall(i);
   paintMap();
+}
+// Bunker shots on a hole, for the followed player or the group, with who and when
+function sandStatRow(i) {
+  const g = sandOnHole(i), me = focus ? sandOnHole(i, focus) : null, st = me && me.rounds ? me : g;
+  const who = st.by.map(b => `${me ? "" : b.p + " "}S${b.s}`).join(", ");
+  const tracked = `${st.rounds} tracked round${st.rounds === 1 ? "" : "s"}`;
+  return `<dt>Bunker shots</dt><dd>${st.shots} in ${tracked}${who ? ` <span class="muted">(${who})</span>` : ""}${me && me.rounds ? ` <span class="muted">(group ${g.shots})</span>` : ""}</dd>`;
 }
 const ordinalWord = n => ["", "", "second", "third", "fourth", "fifth"][n] || n + "th";
 const rankByClub = i => [...STROKE_INDEX].sort((a, b) => a - b).indexOf(STROKE_INDEX[i]) + 1;

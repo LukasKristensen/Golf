@@ -283,21 +283,25 @@ const heat = v => {
 el("key").innerHTML = [["par", 0], ["+1 to +2", 1], ["+3 to +4", 2], ["+5 to +6 (max)", 3]]
   .map(([t, i]) => `<span><i style="background:var(--heat-${i})"></i>${t}</span>`).join("")
   + `<span id="puttnote" hidden>Small figure under a score: putts on that hole</span>`
-  + `<span id="capnote" hidden>* Scored higher, capped at ${MAX_SCORE}</span>`;
+  + `<span id="capnote" hidden>* Scored higher, capped at ${MAX_SCORE}</span>`
+  + `<span id="sandnote" hidden><i class="sand-key"></i>Bunker shot on that hole</span>`;
 
 function showSession(s) {
   const sr = rows.filter(r => r.s === s).sort((a, b) => a.total - b.total);
   const avg = holeAvg.map((_, i) => sr.reduce((a, r) => a + r.h[i], 0) / sr.length);
   const hasPutts = PUTT_SESSIONS.includes(s);
-  el("card").innerHTML = `<thead><tr><th>Player</th>${Array.from({ length: HOLES }, (_, i) => `<th class="h">${i + 1}</th>`).join("")}<th>Total</th><th>To par</th>${hasPutts ? "<th>Putts</th>" : ""}</tr></thead>
-  <tbody><tr><td class="muted">Stroke index</td>${STROKE_INDEX.map(v => `<td class="h muted">${v}</td>`).join("")}<td></td><td></td>${hasPutts ? "<td></td>" : ""}</tr>
-  <tr class="par"><td>Par</td>${Array(HOLES).fill(`<td class="h">${PAR}</td>`).join("")}<td>${COURSE_PAR}</td><td></td>${hasPutts ? "<td></td>" : ""}</tr>
-  ${sr.map(r => { const pt = puttsOf(s, r.p); return `<tr data-player="${r.p}"><td><span class="swatch" style="background:${colorOf(r.p)}"></span>${r.p}</td>
-    ${r.h.map((v, i) => `<td class="h" style="background:${heat(v)}"${r.raw[i] > v ? ` title="Scored ${r.raw[i]}, capped at ${MAX_SCORE}"` : ""}>${v}${r.raw[i] > v ? "*" : ""}${pt ? `<small>${pt.h[i]}</small>` : ""}</td>`).join("")}
-    <td class="${winners[s].includes(r.p) ? "win" : ""}"><strong>${r.total}</strong></td><td>${toPar(r.total - COURSE_PAR)}</td>${hasPutts ? `<td>${pt ? pt.total : "-"}</td>` : ""}</tr>`; }).join("")}
-  <tr><td class="muted">Session avg</td>${avg.map(a => `<td class="h muted">${fmt(a)}</td>`).join("")}<td class="muted">${fmt(sr.reduce((a, r) => a + r.total, 0) / sr.length)}</td><td></td>${hasPutts ? "<td></td>" : ""}</tr></tbody>`;
+  const hasSand = SAND_SESSIONS.includes(s);
+  const extra = (hasPutts ? "<td></td>" : "") + (hasSand ? "<td></td>" : "");
+  el("card").innerHTML = `<thead><tr><th>Player</th>${Array.from({ length: HOLES }, (_, i) => `<th class="h">${i + 1}</th>`).join("")}<th>Total</th><th>To par</th>${hasPutts ? "<th>Putts</th>" : ""}${hasSand ? "<th>Sand</th>" : ""}</tr></thead>
+  <tbody><tr><td class="muted">Stroke index</td>${STROKE_INDEX.map(v => `<td class="h muted">${v}</td>`).join("")}<td></td><td></td>${extra}</tr>
+  <tr class="par"><td>Par</td>${Array(HOLES).fill(`<td class="h">${PAR}</td>`).join("")}<td>${COURSE_PAR}</td><td></td>${extra}</tr>
+  ${sr.map(r => { const pt = puttsOf(s, r.p), sd = sandOf(s, r.p); return `<tr data-player="${r.p}"><td><span class="swatch" style="background:${colorOf(r.p)}"></span>${r.p}</td>
+    ${r.h.map((v, i) => `<td class="h" style="background:${heat(v)}"${r.raw[i] > v ? ` title="Scored ${r.raw[i]}, capped at ${MAX_SCORE}"` : ""}>${v}${r.raw[i] > v ? "*" : ""}${pt ? `<small>${pt.h[i]}</small>` : ""}${sd && sd.h[i] ? `<i class="sand-mark" title="${shotsWord(sd.h[i])}"></i>` : ""}</td>`).join("")}
+    <td class="${winners[s].includes(r.p) ? "win" : ""}"><strong>${r.total}</strong></td><td>${toPar(r.total - COURSE_PAR)}</td>${hasPutts ? `<td>${pt ? pt.total : "-"}</td>` : ""}${hasSand ? `<td>${sd ? sd.total : "-"}</td>` : ""}</tr>`; }).join("")}
+  <tr><td class="muted">Session avg</td>${avg.map(a => `<td class="h muted">${fmt(a)}</td>`).join("")}<td class="muted">${fmt(sr.reduce((a, r) => a + r.total, 0) / sr.length)}</td><td></td>${extra}</tr></tbody>`;
   el("puttnote").hidden = !hasPutts;
   el("capnote").hidden = !sr.some(r => r.raw.some((v, i) => v > r.h[i]));
+  el("sandnote").hidden = !sandRows.some(r => r.s === s && r.total > 0);
   [...el("tabs").children].forEach(b => b.setAttribute("aria-selected", String(+b.dataset.s === s)));
   try { localStorage.setItem("golf-session", s); } catch (e) {}
   applyFocus();

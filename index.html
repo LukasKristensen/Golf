@@ -42,7 +42,7 @@
     </div>
   </header>
 
-  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#course">Course</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#scorecards">Scorecards</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
+  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#scorecards">Scorecards</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#course">Course</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
 
   <nav class="rail" id="rail" aria-label="Page progress"></nav>
 
@@ -64,6 +64,14 @@
     <h2>Players by average score</h2>
     <div class="scroll"><table id="board"></table></div>
     <p class="muted" style="font-size:0.9rem">Wins count the lowest total in a session. Trend shows every round in session order. Click a row to follow that player.</p>
+  </section>
+
+  <section id="scorecards">
+    <span class="eyebrow">Scorecards</span>
+    <h2>Session by session</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="scroll"><table id="card"></table></div>
+    <div class="key" id="key"></div>
   </section>
 
   <section id="replay">
@@ -182,14 +190,6 @@
     </div>
   </section>
 
-  <section id="scorecards">
-    <span class="eyebrow">Scorecards</span>
-    <h2>Session by session</h2>
-    <div class="tabs" role="tablist" id="tabs"></div>
-    <div class="scroll"><table id="card"></table></div>
-    <div class="key" id="key"></div>
-  </section>
-
   <section id="profiles">
     <span class="eyebrow">Players</span>
     <h2>Player cards</h2>
@@ -237,7 +237,7 @@
   </section>
 
   <footer>
-    <p>Source: data/sessions.csv, from the scorecards for sessions 1 to 5 and the golf app for sessions 6 and 7; <span data-fill="rounds">29</span> rounds in total. Putts were counted in sessions <span data-fill="puttSessions">2, 3, 6 and 7</span>. The file has putt rows for session 1, but they are not real counts and are left out. Six session 1 hole scores above 9 (10 to 15) are capped at 9, which lowers that session's totals: Lukas 49 to 44, Daniel 47 to 41, Laurits 51 to 44 and Mikkel 46 to 44. Only sessions 6 and 7 have dates, so sessions are shown in numeric order. <span id="check"></span> Tobias played once, so their single round is shown but not ranked with the regulars.</p>
+    <p>Source: data/sessions.csv, from the scorecards for sessions 1 to 5 and the golf app for sessions 6 and 7; <span data-fill="rounds">29</span> rounds in total. Putts were counted in sessions <span data-fill="puttSessions">2, 3, 6 and 7</span>, and bunker shots from session 7 on. The file has putt rows for session 1, but they are not real counts and are left out. Six session 1 hole scores above 9 (10 to 15) are capped at 9, which lowers that session's totals: Lukas 49 to 44, Daniel 47 to 41, Laurits 51 to 44 and Mikkel 46 to 44. Only sessions 6 and 7 have dates, so sessions are shown in numeric order. <span id="check"></span> Tobias played once, so their single round is shown but not ranked with the regulars.</p>
   </footer>
 </div>
 <div class="tip" id="tip" role="tooltip" hidden></div>

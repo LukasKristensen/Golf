@@ -316,6 +316,18 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 .hd-n { font-size: 0.75rem; color: var(--ink); }
 .hd-v { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--ink); width: 100%; text-align: center; }
 .course-note { font-size: 0.85rem; }
+/* Sand: bunker shots marked in the scorecards, the dot chart and the hole drawings */
+td.h { position: relative; }
+.sand-mark { position: absolute; top: 3px; right: 3px; width: 9px; height: 9px; border-radius: 50%; background: var(--c-sand); box-shadow: 0 0 0 1.5px var(--ink); }
+.key span i.sand-key { width: 10px; height: 10px; border-radius: 50%; background: var(--c-sand); box-shadow: 0 0 0 1.5px var(--ink); vertical-align: -1px; }
+.hdot .sand-ring { fill: var(--c-sand); stroke: var(--ink); stroke-width: 1; }
+.sand-swatch { background: var(--c-sand); box-shadow: 0 0 0 1px var(--ink); }
+.hc-sand { display: inline-block; margin-left: 8px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--c-sand); color: #3a3220; font-size: 0.72rem; line-height: 18px; text-align: center; box-shadow: 0 0 0 1px rgba(0,0,0,0.25); }
+.sand-pulse { fill: none; stroke: var(--c-sand); stroke-width: 6; transform-box: fill-box; transform-origin: center; animation: sandpulse 1.8s ease-out infinite; }
+@keyframes sandpulse { 0% { transform: scale(0.7); opacity: 0.9; } 100% { transform: scale(1.5); opacity: 0; } }
+.sand-tag rect { fill: rgba(20, 24, 20, 0.78); }
+.sand-tag text { fill: #fff; font-family: var(--mono); font-size: 36px; }
+@media (prefers-reduced-motion: reduce) { .sand-pulse { animation: none; opacity: 0.6; } }
 #coursemap { padding: 0; overflow: hidden; }
 #coursemap svg { display: block; width: 100%; height: auto; min-width: 0; }
 #coursemap svg text.mh-num { fill: var(--heat-ink); font-family: var(--display); font-weight: 800; font-size: 17px; pointer-events: none; }
