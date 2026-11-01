@@ -62,7 +62,7 @@ const hideTip = () => (tip.hidden = true);
     { ax: "strip", pos: (r, i) => [xT(r.total), yMid + stripOff[i] * 17], op: r => r === lowest[0] || r === lowest[1] ? 1 : 0.2, ring: r => r === lowest[0] || r === lowest[1] },
   ];
   const steps = [
-    ["25 rounds", `Every round of the season is a dot, placed by its total. The best is ${lowest[0].total}, the worst ${lowest[lowest.length - 1].total}, and the field averages ${fmt(fieldAvg)}.`],
+    [`${rows.length} rounds`, `Every round of the season is a dot, placed by its total. The best is ${lowest[0].total}, the worst ${lowest[lowest.length - 1].total}, and the field averages ${fmt(fieldAvg)}.`],
     ["One player stands apart", `Sort the dots by player and ${lead.p} sits on their own, averaging ${fmt(lead.avg)}: ${fmt(gapToLead)} strokes better than anyone else who has played more than once.`],
     [`${streak > 1 ? `${streak} wins in a row` : "Session winners"}`, `By session, with the winners at full color. ${streak > 1 ? `${champ} has won the last ${streak} sessions, ringed here.` : `${champ} won the latest session.`}`],
     ["The race for second", `Zoom in on the chasers: ${chase.map(c => `${c.p} ${fmt(c.avg)}`).join(", ")}. Only ${fmt(spread)} strokes separate them, so one good round changes the order.`],

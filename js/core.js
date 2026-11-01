@@ -6,8 +6,8 @@ const CSV = window.SESSIONS_CSV;
 const PAR = 3, HOLES = 6, COURSE_PAR = PAR * HOLES;
 // Stroke index (hardest = 1) from the club's scorecard
 const STROKE_INDEX = [13, 1, 9, 17, 11, 5];
-// Putts were counted in sessions 2, 3 and 6; the session 1 putt rows in the file are not real counts.
-const PUTT_SESSIONS = [2, 3, 6];
+// Putts were counted in sessions 2, 3, 6 and 7; the session 1 putt rows in the file are not real counts.
+const PUTT_SESSIONS = [2, 3, 6, 7];
 const parsed = CSV.trim().split(/\r?\n/).slice(1).map(l => {
   const c = l.split(",");
   return { s: +c[0], course: c[1], p: c[2], metric: c[3], h: c.slice(4, 10).map(Number), total: +c[10] };

@@ -97,6 +97,15 @@
   update();
 })();
 
+// Counts in the written text follow the data, so a new session only needs new CSV rows
+(function fillCounts() {
+  const words = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+  const listAnd = list => list.length > 1 ? list.slice(0, -1).join(", ") + " and " + list[list.length - 1] : String(list[0]);
+  const word = words[sessions.length] || String(sessions.length);
+  const fills = { sessionsWord: word[0].toUpperCase() + word.slice(1), rounds: rows.length, puttSessions: listAnd(PUTT_SESSIONS), puttRounds: puttRows.length };
+  document.querySelectorAll("[data-fill]").forEach(n => (n.textContent = fills[n.dataset.fill]));
+})();
+
 // Follow-a-player chips, summary and the shareable ?player= link
 el("chips").innerHTML = players.map(x => `<button type="button" class="chip" aria-pressed="false" data-chip="${x.p}" style="--ring:${colorOf(x.p)}">${avatarHTML(x.p)}${x.p}</button>`).join("");
 function setFocus(p) {
