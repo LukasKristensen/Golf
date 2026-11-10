@@ -19,6 +19,7 @@
 <link rel="preload" href="js/cards.js" as="script">
 <link rel="preload" href="js/story.js" as="script">
 <link rel="preload" href="js/course.js" as="script">
+<link rel="preload" href="js/away.js" as="script">
 <link rel="preload" href="js/app.js" as="script">
 <link rel="preload" href="data/sessions.csv" as="fetch" crossorigin>
 </head>
@@ -42,7 +43,7 @@
     </div>
   </header>
 
-  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#scorecards">Scorecards</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#course">Course</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
+  <nav class="toc" aria-label="Sections"><button type="button" class="following" id="following" hidden></button><a href="#story">Story</a><a href="#leaderboard">Leaderboard</a><a href="#scorecards">Scorecards</a><a href="#replay">Hole race</a><a href="#race">Season race</a><a href="#head-to-head">Head to head</a><a href="#trend">Trend</a><a href="#oland">Øland</a><a href="#course">Course</a><a href="#holes">Holes</a><a href="#every-hole">Every hole</a><a href="#player-by-hole">Player by hole</a><a href="#stroke-index">Stroke index</a><a href="#score-mix">Score mix</a><a href="#putting">Putting</a><a href="#profiles">Player cards</a><a href="#observations">Observations</a></nav>
 
   <nav class="rail" id="rail" aria-label="Page progress"></nav>
 
@@ -122,6 +123,20 @@
       <div class="legend" id="legend"></div>
       <div id="trendchart"></div>
       <p class="muted" style="font-size:0.85rem">A dashed line skips sessions the player missed. Click a name to hide or show that player.</p>
+    </div>
+  </section>
+
+  <section id="oland">
+    <span class="eyebrow">Away round</span>
+    <h2>Nine par 3s at Øland</h2>
+    <p>A one-off round on the nine-hole course at Øland Golfklub on <span id="olanddate">8 November 2026</span>. Every hole is a par 3, so par is 27, with the same cap of 9 per hole. The app logged it on the 18-hole layout, so its pars are replaced with 3 here. This round is not part of any Golfparken stat on this page.</p>
+    <div class="scroll"><table id="olandcard"></table></div>
+    <div class="key" id="olandkey"></div>
+    <div class="notes">
+      <div><h4>Daniel wins by one</h4><p>Daniel went round in 55 (+28), one ahead of Laurits on 56 (+29), with a 4 on the last hole deciding it. Mikkel was third on 65 (+38) and Lukas fourth on 67 (+40).</p></div>
+      <div><h4>Hole 5 beat everyone</h4><p>All four players took the maximum 9 on hole 5. Hole 4 played easiest at 5.3, where Laurits made a 4 with a single putt. The only pars came from Mikkel on hole 1 (one putt) and Daniel on hole 7.</p></div>
+      <div><h4>One green each</h4><p>Everyone hit exactly one green in regulation: Mikkel on hole 3, Daniel on hole 7, and Laurits and Lukas on hole 8. Only Daniel turned it into a par; Laurits four-putted from there.</p></div>
+      <div><h4>Daniel won it on the greens</h4><p>Laurits reached the greens in fewer strokes, 30 against Daniel's 32, but Daniel took 23 putts to Laurits's 26. Mikkel and Lukas also took 26 putts; their gap to the top two came from the long game, 39 and 41 strokes to the green.</p></div>
     </div>
   </section>
 
@@ -237,7 +252,7 @@
   </section>
 
   <footer>
-    <p>Source: data/sessions.csv, from the scorecards for sessions 1 to 5 and the golf app for sessions 6 and 7; <span data-fill="rounds">29</span> rounds in total. Putts were counted in sessions <span data-fill="puttSessions">2, 3, 6 and 7</span>, and bunker shots from session 7 on. The file has putt rows for session 1, but they are not real counts and are left out. Six session 1 hole scores above 9 (10 to 15) are capped at 9, which lowers that session's totals: Lukas 49 to 44, Daniel 47 to 41, Laurits 51 to 44 and Mikkel 46 to 44. Only sessions 6 and 7 have dates, so sessions are shown in numeric order. <span id="check"></span> Tobias played once, so their single round is shown but not ranked with the regulars.</p>
+    <p>Source: data/sessions.csv, from the scorecards for sessions 1 to 5 and the golf app for sessions 6 and 7; <span data-fill="rounds">29</span> rounds in total. Putts were counted in sessions <span data-fill="puttSessions">2, 3, 6 and 7</span>, and bunker shots from session 7 on. The file has putt rows for session 1, but they are not real counts and are left out. Six session 1 hole scores above 9 (10 to 15) are capped at 9, which lowers that session's totals: Lukas 49 to 44, Daniel 47 to 41, Laurits 51 to 44 and Mikkel 46 to 44. Only sessions 6 and 7 have dates, so sessions are shown in numeric order. <span id="check"></span> Tobias played once, so their single round is shown but not ranked with the regulars. The Øland round comes from the golf app and is kept in data/oland.csv, separate from the Golfparken sessions.</p>
   </footer>
 </div>
 <div class="tip" id="tip" role="tooltip" hidden></div>

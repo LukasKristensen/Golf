@@ -320,6 +320,9 @@ tr.hl td, td.hl, th.hl { background-color: color-mix(in srgb, var(--accent) 12%,
 td.h { position: relative; }
 .sand-mark { position: absolute; top: 3px; right: 3px; width: 9px; height: 9px; border-radius: 50%; background: var(--c-sand); box-shadow: 0 0 0 1.5px var(--ink); }
 .key span i.sand-key { width: 10px; height: 10px; border-radius: 50%; background: var(--c-sand); box-shadow: 0 0 0 1.5px var(--ink); vertical-align: -1px; }
+/* Away rounds: greens in regulation marked with a green corner dot */
+.gir-mark { position: absolute; top: 3px; left: 3px; width: 9px; height: 9px; border-radius: 50%; background: var(--c-green); box-shadow: 0 0 0 1.5px var(--ink); }
+.key span i.gir-key { width: 10px; height: 10px; border-radius: 50%; background: var(--c-green); box-shadow: 0 0 0 1.5px var(--ink); vertical-align: -1px; }
 .hdot .sand-ring { fill: var(--c-sand); stroke: var(--ink); stroke-width: 1; }
 .sand-swatch { background: var(--c-sand); box-shadow: 0 0 0 1px var(--ink); }
 .hc-sand { display: inline-block; margin-left: 8px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--c-sand); color: #3a3220; font-size: 0.72rem; line-height: 18px; text-align: center; box-shadow: 0 0 0 1px rgba(0,0,0,0.25); }
