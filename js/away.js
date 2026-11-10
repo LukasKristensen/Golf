@@ -25,7 +25,11 @@
   const head = `<thead><tr><th>Player</th>${avg.map((_, i) => `<th class="h">${i + 1}</th>`).join("")}<th>Total</th><th>To par</th><th>Putts</th><th>GIR</th></tr></thead>`;
   const parRow = `<tr class="par"><td>Par</td>${avg.map(() => `<td class="h">${PAR}</td>`).join("")}<td>${AWAY_PAR}</td><td></td><td></td><td></td></tr>`;
   const body = strokes.map(r => {
-    const pt = of("Putts", r.p), gir = of("GIR", r.p), n = played(r);
+    const pt = of("Putts", r.p), n = played(r);
+    // Green in regulation on a par 3 means on the green off the tee: strokes minus putts is exactly 1.
+    // Worked out here rather than taken from the app, whose GIR ticks did not match its own scores.
+    const gir = pt && { h: r.h.map((v, i) => v !== null && pt.h[i] !== null && v - pt.h[i] === PAR - 2 ? 1 : 0) };
+    if (gir) gir.total = gir.h.reduce((a, b) => a + b, 0);
     const cells = r.h.map((v, i) => v === null
       ? `<td class="h muted" title="No score on hole ${i + 1}">-</td>`
       : `<td class="h" style="background:${heat(v)}">${v}${pt && pt.h[i] !== null ? `<small>${pt.h[i]}</small>` : ""}${gir && gir.h[i] ? `<i class="gir-mark" title="Green in regulation"></i>` : ""}</td>`).join("");
